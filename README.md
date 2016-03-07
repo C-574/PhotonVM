@@ -18,6 +18,7 @@ The name *Photon* was chosen because every instruction that can be executed is v
 
 The code that the Photon compiler packs into a executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).
 
+The full documentation can be found at [http://C-574.github.io/PhotonVM](http://C-574.github.io/PhotonVM "PhotonVM Documentation")
 
 # Examples #
 ------------
