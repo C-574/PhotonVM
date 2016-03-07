@@ -342,9 +342,13 @@ private:
 	 * \bug		Inline comments, like "instr blah #4 -- Comment" are currently not supported. */
 	InstructionNode* tokenizeLine(std::string& line, const uint32_t& lineNumber)
 	{
+		/* The removal of line endings is only required for Windows CR+LF endings. 
+		 * On Linux it seems to work without it. */
+#ifdef _PHOTON_COMPILER_MSVC
 		// Remove \r line endings at the end.
 		if(line.at(line.size() - 1) == '\r')
 			line.at(line.size() - 1) = ' ';
+#endif
 
 		// Get the tokens from the list.
 		std::vector<std::string> tokens = splitString(line, ' ');
