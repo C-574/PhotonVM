@@ -1,0 +1,12 @@
+site_name: PhotonVM
+repo_url: https://github.com/C-574/PhotonVM.git
+pages:
+- Home: index.md
+- Manual:
+    - Language: manual/language.md
+    - Integration Guide: manual/integration-guide.md
+    - Using PVM: manual/using-pvm.md
+- Reference:
+    - VM Architecture: reference/vm-architecture.md
+    - Assembly Lexer: reference/assembly-lexer.md
+theme: spacelab

@@ -1,0 +1,43 @@
+----------------------------------------------------------------------------------
+-- This sample shows how to print the text "HelloWorld" to the standard output. --
+----------------------------------------------------------------------------------
+
+-- Store the character 'H' (72) and call the print hcall (0,2) on it.
+setreg local #72
+hcall $0 #3
+
+-- So the same for the other characters...
+setreg local #101
+hcall $0 #3
+
+setreg local #108
+hcall $0 #3
+hcall $0 #3
+
+setreg local #111
+hcall $0 #3
+
+setreg local #32
+hcall $0 #3
+
+setreg local #87
+hcall $0 #3
+
+setreg local #111
+hcall $0 #3
+
+setreg local #114
+hcall $0 #3
+
+setreg local #108
+hcall $0 #3
+
+setreg local #100
+hcall $0 #3
+
+-- Add an escape sequence at the end to format the output correctly. '\n' = 10.
+setreg local #10
+hcall $0 #3
+
+-- Halt the VM at the end of the byte-code execution.
+halt

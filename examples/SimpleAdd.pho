@@ -1,0 +1,12 @@
+-- Store two values in two registers for addition.
+setreg reg0 #3
+setreg reg1 #7
+
+-- Let the VM add both registers together and store the result in another register, 'local' in this case.
+addreg local reg0 reg1
+
+-- Call the host application to output the calculated value.
+hcall $0 #2
+
+-- Halt the execution of the VM.
+halt 
