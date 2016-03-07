@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>Using PVM - PhotonVM</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../doxygen/html/doxygen.css" rel="stylesheet">
+        <link href="../../doxygen/html/tabs.css" rel="stylesheet">
+        <link href="../../doxygen/html/search/search.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">PhotonVM</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">Home</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../language/">Language</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../integration-guide/">Integration Guide</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Using PVM</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../reference/vm-architecture/">VM Architecture</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../reference/assembly-lexer/">Assembly Lexer</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../integration-guide/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../../reference/vm-architecture/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/C-574/PhotonVM.git">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#using-pvm">Using PVM</a></li>
+        
+            <li><a href="#compile-to-byte-code">Compile to byte-code</a></li>
+        
+            <li><a href="#execute-source-code">Execute source code</a></li>
+        
+            <li><a href="#execute-byte-code">Execute byte-code</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="using-pvm">Using PVM</h1>
+<hr />
+<p>Together with the VM header files also comes a simple implementation of the VM called the <strong>PVM</strong>. This command line program implements all basic functionality that is needed to execute any Photon script. The source can be found in the <code>/source</code> directory of the project. To build the <em>PVM</em> you have to generate the corresponding project file(s) (<em>VS 2015/XCode/Makefiles</em>) for your platform using <a href="https://cmake.org/">CMake</a>.</p>
+<p>PVM supports three basic operations that can be executed via command-line parameters:</p>
+<ul>
+<li>Compile from Photon source to byte-code</li>
+<li>Execute Photon source code</li>
+<li>Execute compiled byte-code</li>
+</ul>
+<p>PVM uses a slightly different syntax for command line arguments than other applications. Instead of <code>-option foo</code> it uses <code>-option=foo</code>.
+The following sections show how to use PVM on the command line.</p>
+<h2 id="compile-to-byte-code">Compile to byte-code</h2>
+<p>To compile source code to executable byte-code an input and output file have to be specified. If no output is specified the compiler will default to <code>./byteCode.pbc</code>.</p>
+<p>At least an input file has to be specified using the <code>-c</code> parameter in order to compile to byte-code. Note that the order of the different parameters are not important.</p>
+<pre><code>pvm -c=./MyCode.pho -o=./MyOutput.pbc
+</code></pre>
+<h2 id="execute-source-code">Execute source code</h2>
+<p>To compile and run source code in the VM use the following syntax:</p>
+<pre><code>pvm -r=./MyCode.pho
+</code></pre>
+<h2 id="execute-byte-code">Execute byte-code</h2>
+<p>The syntax of running already compiled byte-code is pretty similar to executing non-compiled code:</p>
+<pre><code>pvm -b=./MyCode.pbc
+</code></pre>
+<p>For more information about the command-line options use the <code>-h</code> command of PVM which will show the help message. </p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="../../doxygen/html/dynsections.js"></script>
+        <script src="../../doxygen/html/jquery.js"></script>
+        <script src="../../doxygen/html/search/all_0.js"></script>
+        <script src="../../doxygen/html/search/all_1.js"></script>
+        <script src="../../doxygen/html/search/all_10.js"></script>
+        <script src="../../doxygen/html/search/all_2.js"></script>
+        <script src="../../doxygen/html/search/all_3.js"></script>
+        <script src="../../doxygen/html/search/all_4.js"></script>
+        <script src="../../doxygen/html/search/all_5.js"></script>
+        <script src="../../doxygen/html/search/all_6.js"></script>
+        <script src="../../doxygen/html/search/all_7.js"></script>
+        <script src="../../doxygen/html/search/all_8.js"></script>
+        <script src="../../doxygen/html/search/all_9.js"></script>
+        <script src="../../doxygen/html/search/all_a.js"></script>
+        <script src="../../doxygen/html/search/all_b.js"></script>
+        <script src="../../doxygen/html/search/all_c.js"></script>
+        <script src="../../doxygen/html/search/all_d.js"></script>
+        <script src="../../doxygen/html/search/all_e.js"></script>
+        <script src="../../doxygen/html/search/all_f.js"></script>
+        <script src="../../doxygen/html/search/classes_0.js"></script>
+        <script src="../../doxygen/html/search/classes_1.js"></script>
+        <script src="../../doxygen/html/search/classes_2.js"></script>
+        <script src="../../doxygen/html/search/classes_3.js"></script>
+        <script src="../../doxygen/html/search/classes_4.js"></script>
+        <script src="../../doxygen/html/search/classes_5.js"></script>
+        <script src="../../doxygen/html/search/enums_0.js"></script>
+        <script src="../../doxygen/html/search/enums_1.js"></script>
+        <script src="../../doxygen/html/search/enumvalues_0.js"></script>
+        <script src="../../doxygen/html/search/enumvalues_1.js"></script>
+        <script src="../../doxygen/html/search/enumvalues_2.js"></script>
+        <script src="../../doxygen/html/search/enumvalues_3.js"></script>
+        <script src="../../doxygen/html/search/functions_0.js"></script>
+        <script src="../../doxygen/html/search/functions_1.js"></script>
+        <script src="../../doxygen/html/search/functions_2.js"></script>
+        <script src="../../doxygen/html/search/functions_3.js"></script>
+        <script src="../../doxygen/html/search/functions_4.js"></script>
+        <script src="../../doxygen/html/search/functions_5.js"></script>
+        <script src="../../doxygen/html/search/functions_6.js"></script>
+        <script src="../../doxygen/html/search/functions_7.js"></script>
+        <script src="../../doxygen/html/search/functions_8.js"></script>
+        <script src="../../doxygen/html/search/functions_9.js"></script>
+        <script src="../../doxygen/html/search/functions_a.js"></script>
+        <script src="../../doxygen/html/search/functions_b.js"></script>
+        <script src="../../doxygen/html/search/functions_c.js"></script>
+        <script src="../../doxygen/html/search/functions_d.js"></script>
+        <script src="../../doxygen/html/search/namespaces_0.js"></script>
+        <script src="../../doxygen/html/search/pages_0.js"></script>
+        <script src="../../doxygen/html/search/search.js"></script>
+        <script src="../../doxygen/html/search/searchdata.js"></script>
+        <script src="../../doxygen/html/search/typedefs_0.js"></script>
+        <script src="../../doxygen/html/search/variables_0.js"></script>
+        <script src="../../doxygen/html/search/variables_1.js"></script>
+        <script src="../../doxygen/html/search/variables_2.js"></script>
+        <script src="../../doxygen/html/search/variables_3.js"></script>
+        <script src="../../doxygen/html/search/variables_4.js"></script>
+    </body>
+</html>

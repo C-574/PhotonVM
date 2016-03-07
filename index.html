@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>PhotonVM</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+        <link href="./doxygen/html/doxygen.css" rel="stylesheet">
+        <link href="./doxygen/html/tabs.css" rel="stylesheet">
+        <link href="./doxygen/html/search/search.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">PhotonVM</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="manual/language/">Language</a>
+                        </li>
+                    
+                        <li >
+                            <a href="manual/integration-guide/">Integration Guide</a>
+                        </li>
+                    
+                        <li >
+                            <a href="manual/using-pvm/">Using PVM</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="reference/vm-architecture/">VM Architecture</a>
+                        </li>
+                    
+                        <li >
+                            <a href="reference/assembly-lexer/">Assembly Lexer</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="manual/language/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/C-574/PhotonVM.git">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#home">Home</a></li>
+        
+            <li><a href="#features">Features</a></li>
+        
+    
+        <li class="main "><a href="#examples">Examples</a></li>
+        
+            <li><a href="#hello-world">Hello World</a></li>
+        
+            <li><a href="#fibonacci">Fibonacci</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<p><img alt="PhotonVM_Logo" src="./images/Photon_Logo_Text.png?raw=true" /></p>
+<h1 id="home">Home</h1>
+<hr />
+<p>PhotonVM is a register-based virtual machine that is written in C++ with the goals to be very small, in code size and byte code size, while still being a fully functional interpreted language. It was mostly written for educational purposes (and for fun, of course). </p>
+<p><strong>This site contains all documentation about the Photon VM. To <em>get started</em> see the <a href="manual/integration-guide/" title="Integration Guide">Integration Guide</a>.</strong></p>
+<h2 id="features">Features</h2>
+<p>Some of the features of Photon are:</p>
+<ul>
+<li>Easy to integrate (<em>header-only library</em>) with customizable interface for the host application</li>
+<li>No external dependencies (<em>except</em> for the C/C++ standard library and a C++11 compatible compiler)</li>
+<li>Small but fully functional instruction set</li>
+<li>Generates very small byte-code output (16-bits per instruction)</li>
+<li>Can compile and run Photon source code or pre-compiled byte-code</li>
+<li>No dynamic memory allocation at byte-code runtime  </li>
+</ul>
+<p>The name <em>Photon</em> was chosen because every instruction that can be executed is very small and lightweight, as they  are packed into only 16-bits. </p>
+<p>The code that the Photon compiler packs into a executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).</p>
+<h1 id="examples">Examples</h1>
+<hr />
+<p>This section shows a list of examples. These examples can also be found in the <code>/examples</code> directory of the VM.</p>
+<h2 id="hello-world">Hello World</h2>
+<p>This simple example is kind of the <em>"Hello World"</em> of Photon. It shows how to add two values together and print the resulting value to the screen.</p>
+<pre><code>-- Store two values in two registers for addition.
+setreg reg0 #3
+setreg reg1 #7
+
+-- Let the VM add both registers together and store the result in another register, 'local' in this case.
+addreg local reg0 reg1
+
+-- Call the host application to output the calculated value.
+hcall $0 #2
+
+-- Halt the execution of the VM.
+halt
+</code></pre>
+<h2 id="fibonacci">Fibonacci</h2>
+<p>This example shows how to compute the Fibonacci sequence to a specific number of iterations.
+This is a pretty complex example as it makes use of the <code>jump</code> instruction and the special <code>local</code> register to imitate control structures such as <em>while-loops</em> and <em>if-statements</em>. </p>
+<p>The number of iterations of the algorithm is defined by the value of the <em>reg0</em> register while result of the Fibonacci sequence computation is stored in the <em>reg1</em> register. The script in the example directory also prints the result to the host application's output which is ignored here for simplicity.</p>
+<pre><code>-- Defines the iteration count of the algorithm.
+setreg reg0 #6
+
+-- Define the variables that are used to compute the sequence.
+setreg reg1 #0
+setreg tmp0 #0
+setreg tmp1 #1
+
+
+-- tmp3 = instruction count of loop-block (lS).
+setreg tmp3 #9
+-- tmp2 = start index of loop (i).
+setreg tmp2 #2
+
+-- while(i &lt; N) ...
+grtreg local tmp2 reg0
+mulreg local local tmp3
+jump local
+-- BEGIN - While
+addreg reg1 tmp0 tmp1
+cpyreg tmp0 tmp1
+cpyreg tmp1 reg1
+
+-- Increment the loop counter 'i'.
+setreg local #1
+addreg tmp2 tmp2 local
+-- jump back to the loop-head.
+setreg local #10
+invreg local
+jump local
+-- END - While
+
+halt
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+        <script src="./doxygen/html/dynsections.js"></script>
+        <script src="./doxygen/html/jquery.js"></script>
+        <script src="./doxygen/html/search/all_0.js"></script>
+        <script src="./doxygen/html/search/all_1.js"></script>
+        <script src="./doxygen/html/search/all_10.js"></script>
+        <script src="./doxygen/html/search/all_2.js"></script>
+        <script src="./doxygen/html/search/all_3.js"></script>
+        <script src="./doxygen/html/search/all_4.js"></script>
+        <script src="./doxygen/html/search/all_5.js"></script>
+        <script src="./doxygen/html/search/all_6.js"></script>
+        <script src="./doxygen/html/search/all_7.js"></script>
+        <script src="./doxygen/html/search/all_8.js"></script>
+        <script src="./doxygen/html/search/all_9.js"></script>
+        <script src="./doxygen/html/search/all_a.js"></script>
+        <script src="./doxygen/html/search/all_b.js"></script>
+        <script src="./doxygen/html/search/all_c.js"></script>
+        <script src="./doxygen/html/search/all_d.js"></script>
+        <script src="./doxygen/html/search/all_e.js"></script>
+        <script src="./doxygen/html/search/all_f.js"></script>
+        <script src="./doxygen/html/search/classes_0.js"></script>
+        <script src="./doxygen/html/search/classes_1.js"></script>
+        <script src="./doxygen/html/search/classes_2.js"></script>
+        <script src="./doxygen/html/search/classes_3.js"></script>
+        <script src="./doxygen/html/search/classes_4.js"></script>
+        <script src="./doxygen/html/search/classes_5.js"></script>
+        <script src="./doxygen/html/search/enums_0.js"></script>
+        <script src="./doxygen/html/search/enums_1.js"></script>
+        <script src="./doxygen/html/search/enumvalues_0.js"></script>
+        <script src="./doxygen/html/search/enumvalues_1.js"></script>
+        <script src="./doxygen/html/search/enumvalues_2.js"></script>
+        <script src="./doxygen/html/search/enumvalues_3.js"></script>
+        <script src="./doxygen/html/search/functions_0.js"></script>
+        <script src="./doxygen/html/search/functions_1.js"></script>
+        <script src="./doxygen/html/search/functions_2.js"></script>
+        <script src="./doxygen/html/search/functions_3.js"></script>
+        <script src="./doxygen/html/search/functions_4.js"></script>
+        <script src="./doxygen/html/search/functions_5.js"></script>
+        <script src="./doxygen/html/search/functions_6.js"></script>
+        <script src="./doxygen/html/search/functions_7.js"></script>
+        <script src="./doxygen/html/search/functions_8.js"></script>
+        <script src="./doxygen/html/search/functions_9.js"></script>
+        <script src="./doxygen/html/search/functions_a.js"></script>
+        <script src="./doxygen/html/search/functions_b.js"></script>
+        <script src="./doxygen/html/search/functions_c.js"></script>
+        <script src="./doxygen/html/search/functions_d.js"></script>
+        <script src="./doxygen/html/search/namespaces_0.js"></script>
+        <script src="./doxygen/html/search/pages_0.js"></script>
+        <script src="./doxygen/html/search/search.js"></script>
+        <script src="./doxygen/html/search/searchdata.js"></script>
+        <script src="./doxygen/html/search/typedefs_0.js"></script>
+        <script src="./doxygen/html/search/variables_0.js"></script>
+        <script src="./doxygen/html/search/variables_1.js"></script>
+        <script src="./doxygen/html/search/variables_2.js"></script>
+        <script src="./doxygen/html/search/variables_3.js"></script>
+        <script src="./doxygen/html/search/variables_4.js"></script>
+    </body>
+</html>
