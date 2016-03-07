@@ -1,4 +1,4 @@
-![PhotonVM_Logo](doc/images/Photon_Logo_Text_512x64.png?raw=true)
+![PhotonVM_Logo](docs/images/Photon_Logo_Text.png?raw=true)
 
 --------------
 
