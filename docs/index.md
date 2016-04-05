@@ -1,5 +1,3 @@
-![PhotonVM_Logo](images/Photon_Logo_Text.png?raw=true)
-
 # Home #
 ---------------------
 
