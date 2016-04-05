@@ -26,6 +26,10 @@
 #include "PhotonPrerequisites.h"
 
 
+// Current version number of the compiled byte-code.
+#define PHOTON_BYTE_CODE_VERSION 1U
+
+
 namespace Photon
 {
 
@@ -138,18 +142,45 @@ struct ByteCode
  * Byte-Code Loader/Writer
  *--------------------------------------------------------------------------------------------------------------*/
 
-#define BYTE_CODE_MAGIC_NUMBER { 'P', 'B', 'C', ' ' }
-
 #pragma pack(push, 1)
 /** A structire that contains the header of a Photon byte-code file. */
 struct ByteCodeFileHeader
 {
 	/** Magic number of the file type. */
-	char magic[4] = BYTE_CODE_MAGIC_NUMBER;
+	uint8_t magic[3] = {'P', 'B', 'C'};
+	/** Version number of the compiled Photon byte-code. */
+	uint8_t version = PHOTON_BYTE_CODE_VERSION;
 	/** Total number of instructions that are stored in the file. */
 	uint32_t instructionCount;
 };
 #pragma pack(pop)
+
+
+/** Enumeration of all results that can be returned by a byte-code reader or writer. */
+enum ByteCodeReadWriteResult
+{
+	/*-- Reader and writer. --*/
+
+	/** The reader/writer was successfull. */
+	ByteCodeReadWriteResultSuccess,
+	/** The reader/writer has failed to open the spesified file on disk for reading or writing. */
+	ByteCodeReadWriteResultFileOpenFailed,
+	/** The reader/writer has read or written an incorrect number of bytes from/to a file. */
+	ByteCodeReadWriteResultIncorrectData,
+
+	/*-- Reader only. --*/
+
+	/** The reader could not load the specified file because it does not contain Photon byte-code. */
+	ByteCodeReadWriteResultInvalidFileType,
+	/** The reader could not load the specified file because the byte-code to load was compiled with an newer version 
+	 * of the VM byte-code and may be incompatible. Photon byte-code is not forward compatible. */
+	ByteCodeReadWriteResultIncompatibleByteCode,
+	/** The reader loaded the byte-code but warns that the used byte-code version and the used instruction set may
+	 * have changed and are now deprecated. The code may work as expected if no breaking changes have been introduced
+	 * but this is not guaranteed. It is recommanded to recompile the code using a newer version of Photon. This warning
+	 * is for backwards compatibillity of byte-code and can be ignored in some cases. */
+	ByteCodeReadWriteResultDeprecatedWarning
+};
 
 
 /*----------------------------------------------------------------------------------------------------------------
@@ -159,8 +190,8 @@ struct ByteCodeFileHeader
 /** Writes byte-code to a file. 
  * \param	fileName	Output file to write to.
  * \param	byteCode	Byte-code to write to the file.
- * \return	Returns 1 if the file could not be opened for writing, 2 if the data could not be written corretly or zero if no error occured. */
-static uint32_t writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
+ * \return	Returns ByteCodeReadWriteResultSuccess if the data was written successfully or otherwise one of the other ByteCodeReadWriteResult values. */
+static ByteCodeReadWriteResult writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
 {
 	FILE* file;
 	size_t result;
@@ -173,7 +204,7 @@ static uint32_t writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
 	if(error)
 	{
 		// Failed to open the file.
-		return 1U;
+		return ByteCodeReadWriteResultFileOpenFailed;
 	}
 #else
 	// Try to open the specified file in binary, write-only mode.
@@ -181,7 +212,7 @@ static uint32_t writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
 	if(!file)
 	{
 		// Failed to open the file.
-		return 1U;
+		return ByteCodeReadWriteResultFileOpenFailed;
 	}
 #endif //_PHOTON_COMPILER_MSVC
 
@@ -194,22 +225,22 @@ static uint32_t writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
 	{
 		// Incorrect number of bytes written.
 		fclose(file);
-		return 2U;
+		return ByteCodeReadWriteResultIncorrectData;
 	}
 
-	// Write the byte code blob to the file.
+	// Write the byte-code blob to the file.
 	size_t dataBlobSize = sizeof(Photon::RawInstruction) * byteCode.byteCodeInstructionCount;
 	result = fwrite(byteCode.byteCode, dataBlobSize, 1, file);
 	if(result != 1)
 	{
 		// Incorrect number of bytes written.
 		fclose(file);
-		return 2U;
+		return ByteCodeReadWriteResultIncorrectData;
 	}
 
 	// Close the file and release the buffer.
 	fclose(file);
-	return 0;
+	return ByteCodeReadWriteResultSuccess;
 }
 
 
@@ -220,8 +251,8 @@ static uint32_t writeByteCodeToFile(const char* fileName, ByteCode& byteCode)
 /** Reads byte-code from a file. 
  * \param	fileName	Input file to read the byte-code from.
  * \param	byteCode	Byte-code object to read the data in.
- * \return	Returns 1 if the file could not be opened for reading, 2 if the data could not be read corretly, 3 if the byte-code format is invalid or zero if no error occured. */
-static uint32_t loadByteCodeFromFile(const char* fileName, ByteCode& byteCode)
+ * \return	Returns ByteCodeReadWriteResultSuccess if the data was read successfully or otherwise one of the other ByteCodeReadWriteResult values. */
+static ByteCodeReadWriteResult loadByteCodeFromFile(const char* fileName, ByteCode& byteCode)
 {
 	FILE* file;
 	size_t result;
@@ -234,14 +265,14 @@ static uint32_t loadByteCodeFromFile(const char* fileName, ByteCode& byteCode)
 	if(error)
 	{
 		// Failed to open the file.
-		return 1U;
+		return ByteCodeReadWriteResultFileOpenFailed;
 	}
 #else 
 	file = fopen(fileName, "rb");
 	if(!file)
 	{
 		// Failed to open the file.
-		return 1U;
+		return ByteCodeReadWriteResultFileOpenFailed;
 	}
 #endif //_PHOTON_COMPILER_MSVC
 
@@ -251,16 +282,25 @@ static uint32_t loadByteCodeFromFile(const char* fileName, ByteCode& byteCode)
 	{
 		// Incorrect number of bytes read.
 		fclose(file);
-		return 2U;
+		return ByteCodeReadWriteResultIncorrectData;
 	}
 
-	// Check the magic number for the file format.
-	const char magicNum[] = BYTE_CODE_MAGIC_NUMBER;
-	if(memcmp(header.magic, magicNum, sizeof(const char) * 4) != 0)
+	// Check the magic number of the file header.
+	if( header.magic[0] != 'P' ||
+		header.magic[1] != 'B' ||
+		header.magic[2] != 'C')
 	{
 		// Incorrect file format read.
 		fclose(file);
-		return 3U;
+		return ByteCodeReadWriteResultInvalidFileType;
+	}
+
+	// Check the version of the byte-code and decide if we can load the specified version.
+	// TODO(C-574): Should this condition really be forbidden or should we just warn the user?
+	if(header.version > PHOTON_BYTE_CODE_VERSION)
+	{
+		fclose(file);
+		return ByteCodeReadWriteResultIncompatibleByteCode;
 	}
 
 	// Create the byte code buffer.
@@ -274,16 +314,19 @@ static uint32_t loadByteCodeFromFile(const char* fileName, ByteCode& byteCode)
 		// Incorrect number of bytes read.
 		delete[] byteCodeBuffer;
 		fclose(file);
-		return 3U;
+		return ByteCodeReadWriteResultIncorrectData;
 	}
 
 	// Setup the byte-code data.
-	byteCode.byteCodeInstructionCount = header.instructionCount;
-	byteCode.byteCode = byteCodeBuffer;
+	byteCode.byteCodeInstructionCount	= header.instructionCount;
+	byteCode.byteCode					= byteCodeBuffer;
 
 	// Close the file and release the buffer.
 	fclose(file);
-	return 0;
+
+	// Check if the loaded byte-code version is deprecated.
+	return (header.version < PHOTON_BYTE_CODE_VERSION ? 
+		ByteCodeReadWriteResultDeprecatedWarning : ByteCodeReadWriteResultSuccess);
 }
 
 

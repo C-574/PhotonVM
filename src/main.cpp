@@ -165,7 +165,7 @@ void showHelpMessage()
 
 void compileToByteCode(const char* inputFile, const char* outputFile)
 {
-	int32_t result;
+	Photon::ByteCodeReadWriteResult result;
 	Photon::ByteCode* byteCode;
 	
 	// Compile the byte code from source.
@@ -180,12 +180,12 @@ void compileToByteCode(const char* inputFile, const char* outputFile)
 
 	// Write the byte-code block to the output file.
 	result = Photon::writeByteCodeToFile(outputFile, *byteCode);
-	if(result != 0)
+	if(result != Photon::ByteCodeReadWriteResultSuccess)
 	{
 		// Handle error codes.
-		if(result == -1)
+		if(result == Photon::ByteCodeReadWriteResultFileOpenFailed)
 			printf("=> ERROR: Failed to generate output file! Failed to open file: \"%s\"!\n", outputFile);
-		else
+		else /* result == Photon::ByteCodeReadWriteResultIncorrectData */
 			printf("=> ERROR: Failed to generate output file! Incorrect number of bytes written!\n");
 	}
 
@@ -228,7 +228,7 @@ Photon::ByteCode* compileFromSource(const char* inputFile)
 
 Photon::ByteCode* loadFromByteCode(const char* inputFile)
 {
-	uint32_t result;
+	Photon::ByteCodeReadWriteResult result;
 
 	printf("=> Loading byte-code from file \"%s\"...\n", inputFile);
 
@@ -237,14 +237,20 @@ Photon::ByteCode* loadFromByteCode(const char* inputFile)
 
 	// Load the byte-code from the input file.
 	result = Photon::loadByteCodeFromFile(inputFile, *byteCode);
-	if(result != 0)
+	if(result != Photon::ByteCodeReadWriteResultSuccess)
 	{
 		// Handle error codes.
-		if(result == 1U)
+		if(result == Photon::ByteCodeReadWriteResultFileOpenFailed)
 			printf("=> ERROR: Failed to open file: \"%s\"!\n", inputFile);
-		else if(result == 3U)
-			printf("=> ERROR: Incorrect byte-code format!\n");
-		else
+		else if(result == Photon::ByteCodeReadWriteResultInvalidFileType)
+			printf("=> ERROR: Incorrect byte-code format or file does not contain Photon byte-code!\n");
+		else if(result == Photon::ByteCodeReadWriteResultIncompatibleByteCode)
+			printf("=> ERROR: Byte-code was compiled with a newer version and is not compatible!\n");
+#if PHOTON_WARNINGS_ENABLED
+		else if(result == Photon::ByteCodeReadWriteResultDeprecatedWarning)
+			printf("=> WARNING: Byte-code was compiled with and older version of the instruction set and may be deprecated!\n");
+#endif
+		else if(result == Photon::ByteCodeReadWriteResultIncorrectData)
 			printf("=> ERROR: Failed to read byte-code data!\n");
 	}
 
@@ -258,7 +264,7 @@ Photon::ByteCode* loadFromByteCode(const char* inputFile)
  *--------------------------------------------------------------------------------------------------------------*/ 
 
 #if PHOTON_DEBUG_CALLBACK_ENABLED
-/* Example on how to use a callback to get the instruction that got executes and all registers. 
+/* Example on how to use a callback to get the instruction that got executed and all registers. 
  * This is only used if PHOTON_DEBUG_CALLBACK_ENABLED is enabled. */
 void debugCallback(const Photon::Instruction& instruction, const Photon::RegisterType* registers)
 {

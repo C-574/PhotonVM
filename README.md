@@ -1,5 +1,7 @@
 ![PhotonVM_Logo](docs/images/Photon_Logo_Text.png?raw=true)
 
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/C-574/PhotonVM/blob/master/LICENSE.txt)
+
 --------------
 
 PhotonVM is a register-based virtual machine that is written in C++ with the goals to be very small, in code size and byte code size, while still being a fully functional interpreted language. It was mostly written for educational purposes (and for fun, of course). 
@@ -11,7 +13,8 @@ Some of the features of Photon are:
 - Small but fully functional instruction set
 - Generates very small byte-code output (16-bits per instruction)
 - Can compile and run Photon source code or pre-compiled byte-code
-- No dynamic memory allocation at byte-code runtime  
+- No dynamic memory allocation at byte-code runtime
+- MIT licensed
 
 
 The name *Photon* was chosen because every instruction that can be executed is very small and lightweight, as they  are packed into only 16-bits. 
@@ -78,7 +81,7 @@ The number of iterations of the algorithm is defined by the value of the *reg0* 
 	-- Increment the loop counter 'i'.
 	setreg local #1
 	addreg tmp2 tmp2 local
-	-- jump back to the loop-head.
+	-- Jump back to the loop-head.
 	setreg local #10
 	invreg local
 	jump local

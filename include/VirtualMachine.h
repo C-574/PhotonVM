@@ -258,83 +258,70 @@ private:
 		{
 		case InstructionSetRegister:
 		{
-			// Set the new value to the register.
 			setRegister(instruction);
 			break;
 		}
 		case InstructionCopyRegister:
 		{
-			// Copy a register to another.
 			copyRegister(instruction);
 			break;
 		}
 		case InstructionAddRegister:
 		{
-			// Add two registers and store the result in Reg0.
 			addRegister(instruction);
 			break;
 		}
 		case InstructionSubRegister:
 		{
-			// Subtract two registers and store the result in Reg0.
 			subtractRegister(instruction);
 			break;
 		}
 		case InstructionMulRegister:
 		{
-			// Multiply two registers and store the result in Reg0.
 			multiplyRegister(instruction);
 			break;
 		}
 		case InstructionDivRegister:
 		{
-			// Divide two registers and store the result in Reg0.
 			divideRegister(instruction);
 			break;
 		}
 		case InstructionInvRegister:
 		{
-			// Invert a register value.
 			inverteRegister(instruction);
 			break;
 		}
 		case InstructionEqRegister:
 		{
-			// Compare two registers and store the result in Reg0.
 			equalRegister(instruction);
 			break;
 		}
 		case InstructionNeqRegister:
 		{
-			// Compare two registers and store the result in Reg0.
 			notEqualRegister(instruction);
 			break;
 		}
 		case InstructionGrtRegister:
 		{
-			// Compare two registers and store the result in Reg0.
 			greaterRegister(instruction);
 			break;
 		}
 		case InstructionLetRegister:
 		{
-			// Compare two registers and store the result in Reg0.
 			lessRegister(instruction);
 			break;
 		}
 		case InstructionJump:
 		{
-			// Jump to the instruction.
 			jumpInstruction(instruction);
 			break;
 		}
 		case InstructionCallHost:
 		{
-			// Call a function of the host-application.
 			hostCallInstruction(instruction);
 			break;
 		}
-		// NOTE: (Deprecated) This instruction will be removed in some later release.
+		// NOTE: (Deprecated) This instruction will get removed in some later release.
 		case InstructionDumpRegister:
 		{
 			dumpRegisters(instruction);
@@ -343,7 +330,6 @@ private:
 		case InstructionHalt:
 		default:
 		{
-			// Halt the VM and pass the value through.
 			halt(instruction.value);
 			break;
 		}
@@ -383,14 +369,14 @@ private:
 	 *--------------------------------------------------------------------------------------------------------------*/  
 
 
-	/** Get the packed instruction byte code of the next instruction that will be executed by the VM.
-	 * \param	rawInstruction	Returns either the next byte code to excecute or a <i>halt</i> instruction of no byte code is available. */
+	/** Get the packed instruction byte-code of the next instruction that will be executed by the VM.
+	 * \param	rawInstruction	Returns either the next byte code to excecute or a <i>halt</i> instruction of no byte-code is available. */
 	void getNextInstructionCode(RawInstruction& rawInstruction)
 	{
 		// Initialize the instruction code with the halt-instruction by default.
 		rawInstruction = 0x0000;
 
-		// Only try to get an instruction if any byte code is set.
+		// Only try to get an instruction if any byte-code is set.
 		if(m_ByteCode && 
 			(m_ByteCode->byteCodeInstructionCount > 0) &&
 			(m_CurrentPosition <= m_ByteCode->byteCodeInstructionCount))
@@ -468,7 +454,7 @@ private:
 
 private:
 	
-	/** Hidden copy constrctor that prevents the VM from being copied.
+	/** Hidden copy constructor that prevents the VM from being copied.
 	 * \param   other   Other virtual machine to copy from. */
 	VirtualMachine(const VirtualMachine& other)
 	{
