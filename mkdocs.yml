@@ -9,4 +9,4 @@ pages:
 - Reference:
     - VM Architecture: reference/vm-architecture.md
     - Assembly Lexer: reference/assembly-lexer.md
-theme: spacelab
+theme: slate
