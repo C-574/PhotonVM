@@ -53,7 +53,7 @@ static const uint16_t MAX_NUM_HOST_CALLS = 8U;
  *--------------------------------------------------------------------------------------------------------------*/  
 
 /** Version number of the PhotonVM in X.YYY.ZZ (Major, Minor, Sub-Minor) format. Change only this value if the version changes. */
-static const int32_t PHOTON_VM_VERSION				= 100000;
+static const int32_t PHOTON_VM_VERSION				= 100001;
 /** Major version extracted from PHOTON_VM_VERSION. */
 static const int32_t PHOTON_VM_VERSION_MAJOR		= (PHOTON_VM_VERSION / 100000);
 /** Minor version extracted from PHOTON_VM_VERSION. */

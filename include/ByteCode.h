@@ -67,24 +67,6 @@ enum InstructionCode
 /** An instruction that can be executed by the virtual machine's registers. */
 struct Instruction
 {
-	/** Default constructor of an instruction. */
-	Instruction() : 
-		instructionCode(InstructionHalt),
-		param1(0), param2(0), param3(0), value(0)
-	{
-	}
-
-	/** Clear the instruction data to its defaults. */
-	void clear()
-	{
-		instructionCode = InstructionHalt;
-		param1 = 0;
-		param2 = 0;
-		param3 = 0;
-		value  = 0;
-	}
-
-
 	/** Instruction code of the instruction. See VMInstructions for more info.
 	 * \todo Change to 8-/16-bit value? */
 	int32_t instructionCode;
@@ -100,42 +82,55 @@ struct Instruction
 };
 
 
+/** Clear the instruction and reset it to its defaults. 
+ * \param	instruction	Instruction to clear. */
+inline void resetInstruction(Instruction* instruction)
+{
+	instruction->instructionCode = InstructionHalt;
+	instruction->param1 = 0;
+	instruction->param2 = 0;
+	instruction->param3 = 0;
+	instruction->value  = 0;
+}
+
+
 /*----------------------------------------------------------------------------------------------------------------
  * BYTE CODE
  *--------------------------------------------------------------------------------------------------------------*/  
 
-/** This structure contains byte code data that can be executed by the VM. 
- * Note that this is only a container class, you need to free the byte code array after using it. */
+/** This structure contains byte-code data that can be executed by the VM. 
+ * Note that this is only a container class, you need to free the byte-code array after using it. */
 struct ByteCode
 {
-	/** Default constructor. */
-	ByteCode() :
-		byteCode(nullptr),
-		byteCodeInstructionCount(0)
-	{
-	}
+	/** Pointer to the byte-code array to execute. */
+	RawInstruction* instructions;
 
-	/** Constructor. */
-	ByteCode(RawInstruction* byteCode, uint32_t instructionCount) :
-		byteCode(byteCode),
-		byteCodeInstructionCount(instructionCount)
-	{
-	}
-
-	/** Destructor of the byte code structure.
-	 * This will release the byte code array that is stored in the structure. */
-	~ByteCode()
-	{
-		if(byteCode)
-			delete[] byteCode;
-	}
-
-	/** Pointer to the byte code array to execute. */
-	RawInstruction* byteCode;
-
-	/** Total number of byte code instructions that are stored in the byte code array. */
-	uint32_t byteCodeInstructionCount;
+	/** Total number of byte-code instructions that are stored in the byte code array. */
+	uint32_t instructionCount;
 };
+
+
+/** Check if the specified byte-code is valid and could be executed by the VM.
+ * Note that this function only checks if any byte-code is set, not if the set byte-code instructions are valid. 
+ * \param	byteCode	Byte-code to check for.
+ * \return	Returns <b>true</b> if the byte-code is valid and contains any instructions or otherwise <b>false</b>. */
+inline bool isByteCodeValid(ByteCode* byteCode)
+{
+	return (byteCode->instructions && byteCode->instructionCount);
+}
+
+/** Release the byte-code data. This will deallocate the instruction data and reset the instruction count to zero. 
+ * After this method has been called the specified byte-code is invalidated (isByteCodeValid will return <b>false</b>) and the VM will no longer be able to execute it.
+ * \param	byteCode	Byte-code to release. */
+inline void releaseByteCode(ByteCode* byteCode)
+{
+	if(byteCode && isByteCodeValid(byteCode))
+	{
+		delete[] byteCode->instructions;
+		byteCode->instructions = nullptr;
+		byteCode->instructions = 0U;
+	}
+}
 
 
 /*----------------------------------------------------------------------------------------------------------------
@@ -217,7 +212,7 @@ static ByteCodeReadWriteResult writeByteCodeToFile(const char* fileName, ByteCod
 #endif //_PHOTON_COMPILER_MSVC
 
 	// Setup the byte-code header.
-	header.instructionCount = byteCode.byteCodeInstructionCount;
+	header.instructionCount = byteCode.instructionCount;
 
 	// Write the header to the file.
 	result = fwrite(&header, sizeof(ByteCodeFileHeader), 1, file);
@@ -229,8 +224,8 @@ static ByteCodeReadWriteResult writeByteCodeToFile(const char* fileName, ByteCod
 	}
 
 	// Write the byte-code blob to the file.
-	size_t dataBlobSize = sizeof(Photon::RawInstruction) * byteCode.byteCodeInstructionCount;
-	result = fwrite(byteCode.byteCode, dataBlobSize, 1, file);
+	size_t dataBlobSize = sizeof(Photon::RawInstruction) * byteCode.instructionCount;
+	result = fwrite(byteCode.instructions, dataBlobSize, 1, file);
 	if(result != 1)
 	{
 		// Incorrect number of bytes written.
@@ -318,8 +313,8 @@ static ByteCodeReadWriteResult loadByteCodeFromFile(const char* fileName, ByteCo
 	}
 
 	// Setup the byte-code data.
-	byteCode.byteCodeInstructionCount	= header.instructionCount;
-	byteCode.byteCode					= byteCodeBuffer;
+	byteCode.instructionCount	= header.instructionCount;
+	byteCode.instructions		= byteCodeBuffer;
 
 	// Close the file and release the buffer.
 	fclose(file);

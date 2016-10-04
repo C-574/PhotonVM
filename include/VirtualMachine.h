@@ -110,7 +110,7 @@ public:
 		RawInstruction instructionCode;
 
 		// The next instruction that will be executed. Unpacked from the raw instruction code.
-		Instruction nextInstruction;
+		Instruction nextInstruction = {};
 
 
 		/* Run as long as the machine has not halted.
@@ -378,11 +378,11 @@ private:
 
 		// Only try to get an instruction if any byte-code is set.
 		if(m_ByteCode && 
-			(m_ByteCode->byteCodeInstructionCount > 0) &&
-			(m_CurrentPosition <= m_ByteCode->byteCodeInstructionCount))
+			(m_ByteCode->instructionCount > 0) &&
+			(m_CurrentPosition <= m_ByteCode->instructionCount))
 		{
 			// Set the instruction code and increment the position.
-			rawInstruction = m_ByteCode->byteCode[m_CurrentPosition];
+			rawInstruction = m_ByteCode->instructions[m_CurrentPosition];
 			m_CurrentPosition++;
 		}
 	}
@@ -477,7 +477,7 @@ private:
 		
 
 		// Check if the specified offset is a valid index.
-		if(m_ByteCode && (newPosition <= m_ByteCode->byteCodeInstructionCount))
+		if(m_ByteCode && (newPosition <= m_ByteCode->instructionCount))
 		{
 			// Jump to the address.
 			m_CurrentPosition = newPosition;
@@ -486,7 +486,7 @@ private:
 
 		// The position is out of bounds.
 		printMessage(VerbosityLevelError, "VMFAULT: Failed to jump to specified instruction! Instruction address is out of bounds. \n\tInstruction position: %d (%s + %d), begin = 0, end = %d.\n",
-			newPosition, (isRelative ? "current" : "0"), jumpOffset, (m_ByteCode ? m_ByteCode->byteCodeInstructionCount : 0));
+			newPosition, (isRelative ? "current" : "0"), jumpOffset, (m_ByteCode ? m_ByteCode->instructionCount : 0));
 
 		return false;
 	}

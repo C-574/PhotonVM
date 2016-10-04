@@ -8,7 +8,7 @@ The PhotonVM source code language is similar to the Assembly language, as it con
 
 Every instruction **only** operates on the VM registers and has no stack like other languages, e.g. Java. Also an instruction can only take **one constant value** as a parameter per instruction, if any are supported for the specific instruction.
 
-Parameters can be of different types. The following list shows all parameters types that are supported by the language:
+Parameters can be of different types. The following list shows all parameter types that are supported by the language:
 
 - *Register*: Registers are addressed as **reg0 - reg5, tmp0 - tmp5** and special register **"local"**
 - *Constant value*: Scalar and constant values are represented as *#123*. They can range from **0** to **255** and can not be negative.
@@ -99,7 +99,7 @@ As Photon uses only 16-bits to encode an instruction, it has a very limited but 
 	<tr>
 		<td><i>0x0C</i></td>
 		<td><i>jump</i> <b>[register] [isAbsolute]</b></td>
-        <td>Jumps the number of <i>register</i> instructions backwards or forwards in the instruction queue relative to the current position if <i>isAbsolute</i> is zero (default). Otherwise the jump is absolute to the fist instruction (zero-based). If the value is <i>zero</i> then no jump is executed.</td>
+        <td>Jumps the number of <i>register</i> instructions backward or forward in the instruction queue relative to the current position if <i>isAbsolute</i> is zero (default). Otherwise the jump is absolute to the fist instruction (zero-based). If the value is <i>zero</i> then no jump is executed.</td>
     </tr>
 	<tr>
 		<td><i>0x0D</i></td>
@@ -116,9 +116,9 @@ A *Host-Call* is a function that resists in the C++ code of the host-application
 
 The first parameter is the **Group-Id**, this is used to group a number of functions together (mostly for organisation purposes). A group can contain up to 256 different functions.
 
-The second parameter is the **Function-Id** which defines the index of the function in the specific group. Up to *4096* functions can be registered at the same time (total of all groups) and all can be callable via the byte-code, this number can be adjusted if fewer functions are used by the byte-code. 
+The second parameter is the **Function-Id** which defines the index of the function in a specific group. Up to *4096* functions can be registered at the same time (total of all groups) and all can be callable via the byte-code. This number can be adjusted if fewer functions are used by the byte-code. 
 
-The byte-code can call the function via:
+The byte-code can call a function via:
 	
 	-- Group-Id: 0 Function-Id: 1
 	hcall $0 #1

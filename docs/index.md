@@ -1,3 +1,5 @@
+![PhotonVM_Logo](images/Photon_Logo_Text.png?raw=true)
+
 # Home #
 ---------------------
 
@@ -21,7 +23,7 @@ Some of the features of Photon are:
 
 The name *Photon* was chosen because every instruction that can be executed is very small and lightweight, as they  are packed into only 16-bits. 
 
-The code that the Photon compiler packs into a executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).
+The code that the Photon compiler packs into an executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).
 
 
 # Examples #
@@ -53,7 +55,7 @@ Fibonacci
 This example shows how to compute the Fibonacci sequence to a specific number of iterations.
 This is a pretty complex example as it makes use of the `jump` instruction and the special `local` register to imitate control structures such as *while-loops* and *if-statements*. 
 
-The number of iterations of the algorithm is defined by the value of the *reg0* register while result of the Fibonacci sequence computation is stored in the *reg1* register. The script in the example directory also prints the result to the host application's output which is ignored here for simplicity.
+The number of iterations of the algorithm is defined by the value of the *reg0* register while the result of the Fibonacci sequence computation is stored in the *reg1* register. The script in the example directory also prints the result to the host application's output which is ignored here for simplicity.
 
 
 	-- Defines the iteration count of the algorithm.
