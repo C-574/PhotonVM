@@ -60,17 +60,23 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="manual/language/">Language</a>
-                        </li>
+                        
+<li >
+    <a href="manual/language/">Language</a>
+</li>
+
                     
-                        <li >
-                            <a href="manual/integration-guide/">Integration Guide</a>
-                        </li>
+                        
+<li >
+    <a href="manual/integration-guide/">Integration Guide</a>
+</li>
+
                     
-                        <li >
-                            <a href="manual/using-pvm/">Using PVM</a>
-                        </li>
+                        
+<li >
+    <a href="manual/using-pvm/">Using PVM</a>
+</li>
+
                     
                     </ul>
                 </li>
@@ -81,13 +87,17 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="reference/vm-architecture/">VM Architecture</a>
-                        </li>
+                        
+<li >
+    <a href="reference/vm-architecture/">VM Architecture</a>
+</li>
+
                     
-                        <li >
-                            <a href="reference/assembly-lexer/">Assembly Lexer</a>
-                        </li>
+                        
+<li >
+    <a href="reference/assembly-lexer/">Assembly Lexer</a>
+</li>
+
                     
                     </ul>
                 </li>
@@ -97,6 +107,11 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
                 <li class="disabled">
                     <a rel="next" >
                         <i class="fa fa-arrow-left"></i> Previous
@@ -142,6 +157,7 @@
 </div></div>
             <div class="col-md-9" role="main">
 
+<p><img alt="PhotonVM_Logo" src="./images/Photon_Logo_Text.png?raw=true" /></p>
 <h1 id="home">Home</h1>
 <hr />
 <p>PhotonVM is a register-based virtual machine that is written in C++ with the goals to be very small, in code size and byte code size, while still being a fully functional interpreted language. It was mostly written for educational purposes (and for fun, of course). </p>
@@ -158,7 +174,7 @@
 <li>MIT licensed</li>
 </ul>
 <p>The name <em>Photon</em> was chosen because every instruction that can be executed is very small and lightweight, as they  are packed into only 16-bits. </p>
-<p>The code that the Photon compiler packs into a executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).</p>
+<p>The code that the Photon compiler packs into an executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently only tested on Windows 7/10 and Linux Ubuntu 14.04 LTS).</p>
 <h1 id="examples">Examples</h1>
 <hr />
 <p>This section shows a list of examples. These examples can also be found in the <code>/examples</code> directory of the VM.</p>
@@ -180,7 +196,7 @@ halt
 <h2 id="fibonacci">Fibonacci</h2>
 <p>This example shows how to compute the Fibonacci sequence to a specific number of iterations.
 This is a pretty complex example as it makes use of the <code>jump</code> instruction and the special <code>local</code> register to imitate control structures such as <em>while-loops</em> and <em>if-statements</em>. </p>
-<p>The number of iterations of the algorithm is defined by the value of the <em>reg0</em> register while result of the Fibonacci sequence computation is stored in the <em>reg1</em> register. The script in the example directory also prints the result to the host application's output which is ignored here for simplicity.</p>
+<p>The number of iterations of the algorithm is defined by the value of the <em>reg0</em> register while the result of the Fibonacci sequence computation is stored in the <em>reg1</em> register. The script in the example directory also prints the result to the host application's output which is ignored here for simplicity.</p>
 <pre><code>-- Defines the iteration count of the algorithm.
 setreg reg0 #6
 
@@ -226,6 +242,33 @@ halt
         <script src="./js/jquery-1.10.2.min.js"></script>
         <script src="./js/bootstrap-3.0.3.min.js"></script>
         <script src="./js/highlight.pack.js"></script>
+        <script>var base_url = '.';</script>
+        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
         <script src="./js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

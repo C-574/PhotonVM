@@ -60,17 +60,23 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="../language/">Language</a>
-                        </li>
+                        
+<li >
+    <a href="../language/">Language</a>
+</li>
+
                     
-                        <li class="active">
-                            <a href="./">Integration Guide</a>
-                        </li>
+                        
+<li class="active">
+    <a href="./">Integration Guide</a>
+</li>
+
                     
-                        <li >
-                            <a href="../using-pvm/">Using PVM</a>
-                        </li>
+                        
+<li >
+    <a href="../using-pvm/">Using PVM</a>
+</li>
+
                     
                     </ul>
                 </li>
@@ -81,13 +87,17 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="../../reference/vm-architecture/">VM Architecture</a>
-                        </li>
+                        
+<li >
+    <a href="../../reference/vm-architecture/">VM Architecture</a>
+</li>
+
                     
-                        <li >
-                            <a href="../../reference/assembly-lexer/">Assembly Lexer</a>
-                        </li>
+                        
+<li >
+    <a href="../../reference/assembly-lexer/">Assembly Lexer</a>
+</li>
+
                     
                     </ul>
                 </li>
@@ -97,6 +107,11 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
                 <li >
                     <a rel="next" href="../language/">
                         <i class="fa fa-arrow-left"></i> Previous
@@ -132,6 +147,10 @@
         
             <li><a href="#compiling-byte-code">Compiling Byte-Code</a></li>
         
+            <li><a href="#create-a-virtual-machine-and-execute-code">Create a Virtual Machine And Execute Code</a></li>
+        
+            <li><a href="#destroy-a-virtual-machine">Destroy a Virtual Machine</a></li>
+        
             <li><a href="#customizing-photon">Customizing Photon</a></li>
         
             <li><a href="#host-calls">Host-Calls</a></li>
@@ -147,55 +166,73 @@
 <hr />
 <p>This page describes how the Photon scripting language can be integrated into any C++ project. Only a <em>C++11</em> compatible compiler is required in order to compile with Photon. The process of integrating and customizing Photon with your own C++  project will be described in the following sections.</p>
 <h2 id="setting-up-your-project">Setting Up Your Project</h2>
-<p>If you wan to add Photon support to a project, you first have to add the include directory <code>PhotonVM/include</code> to your projects include directories.</p>
+<p>If you want to add Photon support to a project, you first have to add the include directory <code>PhotonVM/include</code> to your project's include directories.</p>
 <p>Photon does not require to link against any specific static or dynamic library at it is a <em>header-only</em> library that will get compiled with the code of your own project.</p>
-<p>Now include the <code>PhotonVM.h</code> header file to get access to all parts of the virtual machine and its language. The following code-snippets shows how to create an instance of the VM that is able to execute compiled byte-code:</p>
-<pre><code>Photon::VirtualMachine virtualMachine(byteCode);
-</code></pre>
-<p>alternatively the byte-code can be set after the VM has been created: </p>
-<pre><code>Photon::VirtualMachine virtualMachine;
-virtualMachine.setByteCode(byteCode);
-</code></pre>
-<p>Before we can start the machine up, we first have to register some <em>Host-Calls</em>. <em>Host-Calls</em> are Photon's way of communicating with the host application that the VM is running in. For more information about <em>Host-Calls</em> see the section on <a href="#host-calls" title="Host-Calls">Host-Calls</a>.  </p>
-<p>It is now time to get the VM running. To do so, simply call the <em>run</em> method of the VM. This method executes the byte-code that was passed to the VM and returns a value that signals if any error has occurred during the execution of the code. This value can be used to e.g. show a message to the user that a script has failed to execute.</p>
-<pre><code>// Execute the byte-code and check the return value.
-Photon::VMExitCode exitCode = virtualMachine.run();
-if(exitCode != Photon::VMExitCodes::ExitCodeSuccess)
-{
-    printf("ERROR: Failed to execute byte-code! The VM has exited with exit code: %hu.\n", exitCode);
-}
-</code></pre>
+<p>Now include the <code>PhotonVM.h</code> header file to get access to all parts of the virtual machine and its language.</p>
 <h2 id="compiling-byte-code">Compiling Byte-Code</h2>
-<p>To be able to execute anything on the VM compiled Byte-Code is required. This is a series of bytes that define instructions that the virtual machine can execute. This code can either be compiled directly from Photon source code or from a file that contains already pre-compiled code. This section shows both ways to get code into Photon.</p>
+<p>To be able to execute anything on the VM, executable byte-code is required. This is a series of bytes that define instructions that the virtual machine can execute. This code can either be compiled directly from Photon source code or from a file that contains already pre-compiled code. This section shows both ways to get code into Photon.</p>
 <p><strong>1) Compiling From Source Code</strong></p>
-<p>Photon source code can be either compiled from a file on disk or directly from an input string that contains the source code. The code below shows how to use both methods. To convert the text data into instructions that are understandable to the VM <em>Lexer</em> is required. This Will parse the specified input and converts it into the corresponding VM instructions. For more information about instructions see the <strong>Language</strong> page of the documentation.  </p>
-<pre><code>// Create a new lexer to parse the input code.
+<p>Photon source code can be either compiled from a file on disk or directly from an input string that contains the source code. The code below shows how to use both methods. To convert the text data into instructions that are understandable to the VM a <em>Lexer</em> is required. This Will parse the specified input and converts it into the corresponding VM instructions. For more information about instructions see the <strong>Language</strong> page of the documentation.  </p>
+<pre><code class="cpp">// Create a new lexer to parse the input code.
 Photon::Lexer lexer;
 
 // Parse the input using the 'parse' or 'parseFromFile' method of the lexer.
-const char* inputCode = "setreg reg0 #12";
-Photon::ByteCode* byteCode = lexer.parse(inputCode);
+const char* inputCode = &quot;setreg reg0 #12&quot;;
+Photon::ByteCode byteCode = lexer.parse(inputCode);
 // OR
-Photon::ByteCode* byteCode = lexer.parseFromFile(inputFile);
+Photon::ByteCode byteCode = lexer.parseFromFile(inputFile);
 
 
 // Report all errors of the lexer that occurred during compilation.
 while(lexer.hasError())
 {
-    printf("%s\n", lexer.getErrorMessage().c_str());
-}
+    printf(&quot;%s\n&quot;, lexer.getErrorMessage().c_str());
+} 
 </code></pre>
+
+<p>Note that compiling from source code may get expensive and compilation should be done ahead of time if Photon is used for real-time applications. </p>
 <p><strong>2) Loading From Byte-Code</strong></p>
 <p>Byte-code is an already compiled form of VM instructions that can be loaded faster than regular source code and is very small compared to the original source. The following sample shows how to load pre-compiled byte-code from a file on disk.</p>
-<pre><code>// Create the byte-code object that the data gets read into.
-Photon::ByteCode* byteCode = new Photon::ByteCode();
+<pre><code class="cpp">// Create the byte-code object that the data gets read into.
+Photon::ByteCode byteCode;
 
 // Load the actual byte-code from the input file.
-Photon::loadByteCodeFromFile(inputFile, *byteCode);
+Photon::loadByteCodeFromFile(inputFile, byteCode);
 </code></pre>
+
 <p>Similar to the <code>loadByteCodeFromFile</code> function a <code>writeByteCodeToFile</code> function exists which will write byte-code <strong>to</strong> a file on disk.</p>
+<h2 id="create-a-virtual-machine-and-execute-code">Create a Virtual Machine And Execute Code</h2>
+<p>The following code-snippets shows how to create an instance of the VM that is able to execute compiled byte-code:</p>
+<pre><code class="cpp">Photon::VirtualMachine virtualMachine(&amp;byteCode);
+</code></pre>
+
+<p>Alternatively the byte-code can be set after the VM has been created: </p>
+<pre><code class="cpp">Photon::VirtualMachine virtualMachine;
+virtualMachine.setByteCode(&amp;byteCode);
+</code></pre>
+
+<p>Before we start the virtual machine up, we can also register some of our own <em>Host-Calls</em>. <em>Host-Calls</em> are Photon's way of communicating with the host application that the VM is running in. For more information about <em>Host-Calls</em> see the section on <a href="#host-calls" title="Host-Calls">Host-Calls</a>.  </p>
+<p>It is now time to get the VM running. To do so, simply call the <em>run</em> method of the VM. This method executes the byte-code that was passed to the VM and returns a value that signals if any error has occurred during the execution of the code. This value can be used to e.g. show a message to the user that a script has failed to execute.</p>
+<pre><code class="cpp">// Execute the byte-code and check the return value.
+Photon::VMExitCode exitCode = virtualMachine.run();
+if(exitCode != Photon::VMExitCodes::ExitCodeSuccess)
+{
+    printf(&quot;ERROR: Failed to execute byte-code! The VM has exited with exit code: %hu.\n&quot;, exitCode);
+}
+</code></pre>
+
+<h2 id="destroy-a-virtual-machine">Destroy a Virtual Machine</h2>
+<p>A VM will automatically be destroyed if the instance of the <code>VirtualMachine</code> object goes out of scope. Nevertheless there are some things that need to be done in order to prevent memory leaks. First it is required to call release the byte-code that was loaded by the parser.</p>
+<pre><code class="cpp">Photon::ByteCode byteCode = ...
+
+if(Photon::isByteCodeValid(&amp;byteCode))
+{
+    Photon::releaseByteCode(&amp;byteCode);
+}
+</code></pre>
+
 <h2 id="customizing-photon">Customizing Photon</h2>
-<p>When integrating Photon into your own project you are able to customize it to the needs of your application. Some of this options can be found in the <code>PhotonVM.h</code> header file. The following table shows a list of all global options that can be set when compiling Photon:</p>
+<p>When integrating Photon into your own project you are able to customize it to the needs of your application. The options below can be found in the <code>PhotonVM.h</code> header file. The following table shows a list of all global options that can be set when compiling Photon:</p>
 <table>
     <tr>
         <td><b>Option</b></td>
@@ -215,7 +252,7 @@ Photon::loadByteCodeFromFile(inputFile, *byteCode);
     <tr>
         <td><i>PHOTON_DEBUG_CALLBACK_ENABLED</i></td>
         <td><b><i>0-1</i></td>
-        <td>Enable or disable the user debug callback on the virtual machine. For more information see the section of this page about <i>Debug Callbacks</i>.</td>
+        <td>Enable or disable the user debug callback on the virtual machine. For more information see the section of this page about <a href="#debug-callbacks" title="Debug Callbacks">Debug Callbacks</a>.</td>
     </tr>
     <tr>
         <td><i>MAX_NUM_HOST_CALLS</i></td>
@@ -227,11 +264,11 @@ Photon::loadByteCodeFromFile(inputFile, *byteCode);
 <h2 id="host-calls">Host-Calls</h2>
 <p>Another way of customizing Photon is to add application and script depended <strong><em>Host-Calls</em></strong>. <em>Host-Calls</em> are functions that resist in the C++ code of the host application and can be accessed from scripts to communicate with the host of the VM. They can be used to add custom behaviour to the VM or simply provide more complex instructions that are not supported by the core VM. The example below shows how to create a custom function that can be called from script and squares the value of a register.</p>
 <p>To expose a function to the VM byte-code from the host-application, a class needs to be declared that defines the C++ code that will be executed on a call from the byte-code.</p>
-<pre><code>class HC_SquareValue : public Photon::IHostCallFunction
+<pre><code class="cpp">class HC_SquareValue : public Photon::IHostCallFunction
 {
 public:
     HC_SquareValue() : 
-        IHostCallFunction(0 /*Group ID used by the VM*/, 1 /*Function ID that identifies the function*/, "SquareValue")
+        IHostCallFunction(0 /*Group ID used by the VM*/, 1 /*Function ID that identifies the function*/, &quot;SquareValue&quot;)
     { }
 
     void execute(RegisterType* registers) override
@@ -245,10 +282,11 @@ public:
         // Store the result in the reg2 register.
         registers[Photon::VirtualMachine::Reg2] = value;
     }   
-};
+}; 
 </code></pre>
+
 <p>If OOP is not required for a <em>Host-Call</em> then alternatively the <code>DECLARE_SIMPLE_HOST_CALL_BEGIN</code> and <code>DECLARE_SIMPLE_HOST_CALL_END</code> macros can be used to automatically wrap the implementation into a class.  </p>
-<pre><code>DECLARE_SIMPLE_HOST_CALL_BEGIN(HC_SquareValue, 0 /*Group ID used by the VM*/, 1 /*Function ID that identifies the function*/, "SquareValue")
+<pre><code class="cpp">DECLARE_SIMPLE_HOST_CALL_BEGIN(HC_SquareValue, 0 /*Group ID used by the VM*/, 1 /*Function ID that identifies the function*/, &quot;SquareValue&quot;)
 {
     // Get the input of the value to compute from the reg1 register.
     Photon::RegisterType value = registers[Photon::VirtualMachine::Reg1];
@@ -261,24 +299,28 @@ public:
 }
 DECLARE_SIMPLE_HOST_CALL_END()
 </code></pre>
+
 <p>After the <em>Host-Call</em> has been declared it only has to get registered with the VM that should call it. Note that the VM <strong>does not</strong> take over the ownership of the <em>Host-Call</em> instance which means that you are responsible to release the instance when it is no longer needed. Currently there is also no way to <em>unregister</em> a host call, this may get changed in the future.</p>
-<pre><code>// Create an instance of the call and register it with the VM.
+<pre><code class="cpp">// Create an instance of the call and register it with the VM.
 static HC_SquareValue hcSquareValue;
 virtualMachine.registerHostCallFunction(&amp;hcSquareValue);
 </code></pre>
+
 <p>Now a Photon script can call the function via the <em>hcall</em> instruction.</p>
-<pre><code>setreg reg1 #10
-hcall $0 #1
+<pre><code class="makefile">setreg reg1 #10
+hcall $0 #1 
 </code></pre>
+
 <h2 id="debug-callbacks">Debug Callbacks</h2>
 <p>Debug callbacks can be useful when debugging the VM. They report the decoded instruction that got executed by the VM and the current state of all registers. This information can be used to track bugs in Photon scripts. For this feature to work the <strong>PHOTON_DEBUG_CALLBACK_ENABLED</strong> option must be enabled. It is <strong>important</strong> that the signature of the custom callback function matches <code>void callbackName(const Photon::Instruction&amp; instruction, const Photon::RegisterType* registers)</code>. Note that <em>neither</em> the instruction that was executed <em>nor</em> the registers themselves can be modified by the callback at any time. Also only <em>one</em> callback can be bound to <em>one</em> VM instance at a time. An example of a custom callback that prints the last executed instruction and current value of the <code>local</code> register to the standard output:</p>
-<pre><code>void myCallback(const Photon::Instruction&amp; instruction, const Photon::RegisterType* registers)
+<pre><code class="cpp">void myCallback(const Photon::Instruction&amp; instruction, const Photon::RegisterType* registers)
 {
-    printf("Instruction executed: %d, local=%d\n", instruction.instructionCode, registers[Photon::VirtualMachine::Local]);
+    printf(&quot;Instruction executed: %d, local=%d\n&quot;, instruction.instructionCode, registers[Photon::VirtualMachine::Local]);
 }
 </code></pre>
+
 <p>Now the callback has to be registered with an instance of a virtual machine. Only one callback can be registered with one VM at a time. Debug callbacks always get called <strong>after</strong> an instruction has been executed by the virtual machine.</p>
-<pre><code>// Register with a virtual machine.
+<pre><code class="cpp">// Register with a virtual machine.
 virtualMachine.setUserCallbackFunction(myCallback);
 </code></pre></div>
         </div>
@@ -292,6 +334,33 @@ virtualMachine.setUserCallbackFunction(myCallback);
         <script src="../../js/jquery-1.10.2.min.js"></script>
         <script src="../../js/bootstrap-3.0.3.min.js"></script>
         <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
         <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
