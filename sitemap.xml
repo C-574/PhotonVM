@@ -3,8 +3,8 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-10-04</lastmod>
+     <loc>/</loc>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,20 +12,14 @@
     
         
     <url>
-     <loc>None/manual/language/</loc>
-     <lastmod>2016-10-04</lastmod>
+     <loc>/manual/language/</loc>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/manual/integration-guide/</loc>
-     <lastmod>2016-10-04</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/manual/using-pvm/</loc>
-     <lastmod>2016-10-04</lastmod>
+     <loc>/manual/integration-guide/</loc>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -34,14 +28,8 @@
     
         
     <url>
-     <loc>None/reference/vm-architecture/</loc>
-     <lastmod>2016-10-04</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/reference/assembly-lexer/</loc>
-     <lastmod>2016-10-04</lastmod>
+     <loc>/reference/vm-architecture/</loc>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

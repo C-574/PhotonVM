@@ -1,291 +1,574 @@
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-unidata-1.5.4">
+    
+    
+      
+        <title>VM Architecture - PhotonVM</title>
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr-56ade86843.js"></script>
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application-b1a1975878.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-f78e5cb881.palette.css">
+      
+    
+    
+      
         
         
         
-        <link rel="shortcut icon" href="../../img/favicon.ico">
-
-	<title>VM Architecture - PhotonVM</title>
-
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
-        <link rel="stylesheet" href="../../css/highlight.css">
-        <link href="../../css/base.css" rel="stylesheet">
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
-
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    <svg class="md-svg">
+      <defs>
         
-    </head>
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    
+      <a href="../.."><div class="background-logo" style="background-image: url(../../images/Corner_Logo.png);"></div>
+    
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href="../.." title="PhotonVM" class="md-icon md-icon--home md-header-nav__button">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+              
 
-    <body>
+                  
+                      <span class="md-header-nav__parent">
+                      Reference
+                      </span>
+                  
+ 
+                  
+                      VM Architecture
+                  
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-
-        <!-- Collapsed navigation -->
-        <div class="navbar-header">
-            <!-- Expander button -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-            <!-- Main title -->
-            <a class="navbar-brand" href="../..">PhotonVM</a>
+              
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
         </div>
-
-        <!-- Expanded navigation -->
-        <div class="navbar-collapse collapse">
-            <!-- Main navigation -->
-            <ul class="nav navbar-nav">
-            
-            
-                <li >
-                    <a href="../..">Home</a>
-                </li>
-            
-            
-            
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        
-<li >
-    <a href="../../manual/language/">Language</a>
-</li>
-
-                    
-                        
-<li >
-    <a href="../../manual/integration-guide/">Integration Guide</a>
-</li>
-
-                    
-                        
-<li >
-    <a href="../../manual/using-pvm/">Using PVM</a>
-</li>
-
-                    
-                    </ul>
-                </li>
-            
-            
-            
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    
-                        
-<li class="active">
-    <a href="./">VM Architecture</a>
-</li>
-
-                    
-                        
-<li >
-    <a href="../assembly-lexer/">Assembly Lexer</a>
-</li>
-
-                    
-                    </ul>
-                </li>
-            
-            
-            </ul>
-
-            <!-- Search, Navigation and Repo links -->
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
-                <li >
-                    <a rel="next" href="../../manual/using-pvm/">
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
-                <li >
-                    <a rel="prev" href="../assembly-lexer/">
-                        Next <i class="fa fa-arrow-right"></i>
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="https://github.com/C-574/PhotonVM.git">
-                        
-                            <i class="fa fa-github"></i>
-                        
-                        GitHub
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <div class="md-header-nav__source">
+          
+            
 
-        <div class="container">
-            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
+
+  
+
+
+  <a href="https://github.com/C-574/PhotonVM" title="Go to repository" class="md-source" data-md-source="github">
     
-        <li class="main active"><a href="#vm-architecture">VM Architecture</a></li>
-        
-            <li><a href="#registers">Registers</a></li>
-        
-            <li><a href="#instruction-encoding">Instruction Encoding</a></li>
-        
-            <li><a href="#halt-instruction">Halt Instruction</a></li>
-        
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
     
+    <div class="md-source__repository">
+      C-574/PhotonVM
+    </div>
+  </a>
+
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    <div class="md-nav__button md-logo">
+      
+        <i class="md-icon md-icon--home"></i>
+      
+    </div>
+    PhotonVM
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/C-574/PhotonVM" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      C-574/PhotonVM
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Manual
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Manual
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../manual/language/" title="Language" class="md-nav__link">
+      Language
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../manual/integration-guide/" title="Integration Guide" class="md-nav__link">
+      Integration Guide
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Reference
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        VM Architecture
+      </label>
+    
+    <a href="./" title="VM Architecture" class="md-nav__link md-nav__link--active">
+      VM Architecture
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#registers" title="Registers" class="md-nav__link">
+    Registers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instruction-encoding" title="Instruction Encoding" class="md-nav__link">
+    Instruction Encoding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#halt-instruction" title="Halt Instruction" class="md-nav__link">
+    Halt Instruction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-execution" title="Code Execution" class="md-nav__link">
+    Code Execution
+  </a>
+  
+</li>
+      
+      
+      
     </ul>
-</div></div>
-            <div class="col-md-9" role="main">
+  
+</nav>
+    
+  </li>
 
-<h1 id="vm-architecture">VM Architecture</h1>
-<hr />
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#registers" title="Registers" class="md-nav__link">
+    Registers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instruction-encoding" title="Instruction Encoding" class="md-nav__link">
+    Instruction Encoding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#halt-instruction" title="Halt Instruction" class="md-nav__link">
+    Halt Instruction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-execution" title="Code Execution" class="md-nav__link">
+    Code Execution
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="vm-architecture">VM Architecture<a class="headerlink" href="#vm-architecture" title="Permanent link">&para;</a></h1>
 <p>This section describes the architecture that is used to create the core of the Photon VM.
-The core consists of a list of registers that the compiled byte-code can operate on. The following graphic shows an overview of the core architecture of the VM.</p>
+The core consists of a fixed set of registers that the compiled byte-code can operate on. The following graphic shows an overview of the core architecture of the VM.</p>
 <p><img alt="CoreArchitecture" src="../../images/CoreArchitecture.png?raw=true" /></p>
-<h2 id="registers">Registers</h2>
-<p>Photon's core consists of <em>13</em> different registers of which <em>12</em> can be used by the user code or as result registers for more complex host calls. The minimum value that a register can hold is <em>-2<sup>32</sup></em> and the maximum is <em>2<sup>32</sup>-1</em>. The registers are grouped into three categories: </p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Need to rework the graphic!</p>
+</div>
+<h2 id="registers">Registers<a class="headerlink" href="#registers" title="Permanent link">&para;</a></h2>
+<p>Photon's core consists of <em>13</em> different registers of which <em>12</em> can be used by the user code or as result registers for more complex host calls. The minimum value that a register can hold is <em>-2<sup>32</sup></em> and the maximum is <em>2<sup>32</sup>-1</em>. The registers are grouped into two categories: </p>
 <ul>
 <li>
-<p>General use registers. These range from <strong>reg0</strong> to <strong>reg5</strong> and are only used by the user code and no external modification should be made to these registers other than the instructions that are defined by the user.</p>
+<p>General use registers. These range from <strong>reg0</strong> to <strong>reg11</strong> and are only used by the user code and no external modification should be made to these registers other than the instructions that are defined by the user.</p>
 </li>
 <li>
-<p>Temporary registers. These range from <strong>tmp0</strong> to <strong>tmp5</strong> and can be used for host calls or other computations as output or working registers. It is not guaranteed that a value that is set by the user will <em>not</em> get  overwritten by any external code.</p>
-</li>
-<li>
-<p>Special purpose registers. These include the <strong>local</strong> register. This register is only used for short-time storage because it is <strong>not</strong> guaranteed that the value will not get overwritten by one of the following instructions. Use it to transfer data from one instruction to the next.</p>
+<p>Special purpose registers. The register <strong>reg12</strong> (aka. <em>local</em>) is only used for short-time storage because it is <strong>not</strong> guaranteed that the value will not get overwritten by one of the following instructions. Use it to transfer data from one instruction to the next.</p>
 </li>
 </ul>
-<p>Note that the VM does <strong>not</strong> support string and floating-point types. If string types are needed, for example as identifier, then use string hashing at compile time level or plain indices instead. </p>
-<h2 id="instruction-encoding">Instruction Encoding</h2>
+<p>Note that the VM does <strong>not</strong> support string and floating-point types. If string types are needed, for example as identifier, then use string hashing at compile time level or plain indices instead.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Photon byte-code can not encode values that are greater than 255 or negative but registers can, for example as the result of an addition or using the <code class="codehilite"><span class="nf">inv</span></code> instruction.</p>
+</div>
+<h2 id="instruction-encoding">Instruction Encoding<a class="headerlink" href="#instruction-encoding" title="Permanent link">&para;</a></h2>
 <p>Instruction codes in Photon are encoded into 16-bit unsigned integer values. These contain all data of an instruction so the VM is able to decode and execute it on the fly.</p>
-<p>Values (or scalars/constants) are encoded in the last 8-bits of the instruction, so the VM supports values in a range from <em>0-255</em>. The data gets placed from the last-significant-bit position:</p>
-<pre><code>| 7| 6| 5| 4| 3| 2| 1| 0|
-</code></pre>
-<p>The parameters are stored using 4-bits for all:</p>
-<pre><code>|11|10| 9| 8|
-</code></pre>
-<p>The first 4-bits are used to store the instruction type:</p>
-<pre><code>|15|14|13|12|
-</code></pre>
+<p>Constants are encoded in the last 8-bits of the instruction, so the VM supports values in a range from <em>0-255</em>. The data gets placed from the last-significant-bit position:</p>
+<div class="codehilite"><pre><span></span>| 7| 6| 5| 4| 3| 2| 1| 0|
+</pre></div>
+
+
+<p>Parameters are stored using 4-bits for all:</p>
+<div class="codehilite"><pre><span></span>|11|10| 9| 8|
+</pre></div>
+
+
+<p>The most significant 4 bits are used to store the instruction type:</p>
+<div class="codehilite"><pre><span></span>|15|14|13|12|
+</pre></div>
+
+
 <p>As an example, an instruction that loads a constant value into a VM register would be represented as following:</p>
-<pre><code>setreg   reg2   #30
+<div class="codehilite"><pre><span></span>set      reg2   30
 -------------------------
 0001     0010   00011110 =&gt; 0x121E
-</code></pre>
-<p>Note that registers can store values that are <strong>greater than 255</strong>, e.g. as the result of an addition.
-Some instructions use three parameters to define their behaviour, this works by splitting the 8-bit constant section into two 4-bit sections. This works because registers <strong>never</strong> exceed the <em>0x0 - 0xF</em> range so they can be stored using only 4-bits.</p>
-<h2 id="halt-instruction">Halt Instruction</h2>
-<p>The halt instruction is similar to C/C++ <code>return</code> or <code>exit</code>. It can indicate an error in the VM byte-code that can either be emitted by the VM itself, e.g. by an <em>out of bounds jump</em> or a <em>divide by zero</em>. The halt instruction does not need to take any parameter, in this case it <strong>will always</strong> return success to the host-application. The host-application can query the last exit code from the VM via the <code>getExitCode()</code> method.</p>
-<p>Photon defines a fixed number of exit codes that can be emitted by the VM itself to report internal errors that are critical and should halt the VM immediately. The following table shows all internal exit codes:</p>
+</pre></div>
+
+
+<p>Many instructions use three parameters instead of two. The 8-bit constant section then gets split into two 4-bit sections. This works because registers <strong>never</strong> exceed the <code>[0x0, 0xF]</code> range so they can be stored using only 4-bits.</p>
+<h2 id="halt-instruction">Halt Instruction<a class="headerlink" href="#halt-instruction" title="Permanent link">&para;</a></h2>
+<p>The halt instruction is similar to C/C++ <code class="codehilite"><span class="k">return</span></code> or <code class="codehilite"><span class="nf">exit</span><span class="p">()</span></code>. It indicates an errors in the VM byte-code that can either be emitted by the VM itself, e.g. by an <em>out of bounds jump</em> or a <em>divide by zero</em>, or from user code by using the <code class="codehilite"><span class="nf">halt</span></code> instruction. By default every script will contain a halt at the end with a parameter of <code>0</code>, though it is advised to explicitly halt the VM at the end of script execution.</p>
+<p>Photon defines a fixed number of exit codes that can be emitted by the VM itself to report internal errors which should halt the VM immediately. These codes are encoded in the most significant bits while user errors should be encoded in the least significant bits to avoid conflicts. The following table shows all internal exit codes:</p>
 <table>
-    <tr>
-        <td><b>Exit Code</b></td>
-        <td><b>Code Name</b></td>
-        <td><b>Description</b></td>
-    </tr>
-    <tr>
-        <td><i>0</i></td>
-        <td><b><i>ExitCodeSuccess</i></td>
-        <td>Signals success.</td>
-    </tr>
-    <tr>
-        <td><i>1</i></td>
-        <td><b><i>ExitCodeDivideByZero</i></b></td>
-        <td>Signals a division by zero error.</td>
-    </tr>
-    <tr>
-        <td><i>2</i></td>
-        <td><b><i>ExitCodeJumpOutOfBounds</i></b></td>
-        <td>Signals that the offset of a jump-instruction is out of bounds.</td>
-    </tr>
-    <tr>
-        <td><i>3</i></td>
-        <td><b><i>ExitCodeRegisterFault</i></b></td>
-        <td>Signals that the byte-code tried to access an invalid register.</td>
-    </tr>
-    <tr>
-        <td><i>4</i></td>
-        <td><b><i>ExitCodeInvalidHostCall</i></b></td>
-        <td>Signals that a host call function was requested but could not be found. This will only be signalled if <b><i>PHOTON_IS_HOST_CALL_STRICT</i></b> is enabled.</td>
-    </tr>
-    <tr>
-        <td><i>5</i></td>
-        <td><b><i>ExitCodeUserCode</i></b></td>
-        <td>First error code that should be used by any non VM code. User errors should start at <b><i>ExitCodeUserCode + userCodeNumber</i></b> as they will otherwise conflict with the above values.</td>
-    </tr>
+<thead>
+<tr>
+<th>Exit Code</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>ExitCodeSuccess</td>
+<td>Signals sucessfull execution of the code.</td>
+</tr>
+<tr>
+<td>251</td>
+<td>ExitCodeHaltRequested</td>
+<td>Signals that the VM should be halted by a user request. This does not mean that the VM has finished execution of the byte-code.</td>
+</tr>
+<tr>
+<td>252</td>
+<td>ExitCodeDivideByZero</td>
+<td>Signals a division by zero error.</td>
+</tr>
+<tr>
+<td>253</td>
+<td>ExitCodeJumpOutOfBounds</td>
+<td>Signals that the offset of a jump instruction is out of bounds.</td>
+</tr>
+<tr>
+<td>254</td>
+<td>ExitCodeRegisterFault</td>
+<td>Signals that the byte-code tried to access an invalid register.</td>
+</tr>
+<tr>
+<td>255</td>
+<td>ExitCodeInvalidHostCall</td>
+<td>Signals that a host call function was requested but could not be resolved. This will only be signalled if <code class="codehilite"><span class="n">PHOTON_IS_HOST_CALL_STRICT</span></code> is enabled.</td>
+</tr>
+</tbody>
 </table>
-
-<p>If the result of the VM execution is greater or equal to <code>ExitCodeUserCode</code> then the exit code is emitted by the user byte-code.</p>
-<p>The exit code is returned from the <code>run()</code> method of the VM instance or alternatively by calling <code>getExitCode()</code> on the VM instance.</p>
-<pre><code>Photon::VMExitCode code = virtualMachine.run();
-// OR
-Photon::VMExitCode code = virtualMachine.getExitCode();
-
-// Check the exit code for success.
-if(code != Photon::VMExitCodes::ExitCodeSuccess)
-{
-    printf("The VM has exited with exit code: %d.\n", code);
-}
-else
-{   
-    printf("VM successfully finished!");
-}
-</code></pre></div>
+<h2 id="code-execution">Code Execution<a class="headerlink" href="#code-execution" title="Permanent link">&para;</a></h2>
+<p>Photon byte-code is stored in a contiguous block of memory as a list of packed 16-bit instruction codes. Execution of this byte-code list will always start at the first instruction and it is guaranteed that all registers are cleared to zero before the first instruction gets executed. The VM will run until either a halt instruction is executed or no more instructions are left to execute. In the latter case success of the execution is assumed. Furthermore when executing any byte-code the implementation will <strong>never</strong> assume that the actual byte-code is correct and should handle invalid execution by halting.</p>
+<p>If debug callbacks are used then they get called <em>after</em> the instruction got executed.</p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
         </div>
-
-        <footer class="col-md-12">
-            <hr>
-            
-            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
-        </footer>
-
-        <script src="../../js/jquery-1.10.2.min.js"></script>
-        <script src="../../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../../js/highlight.pack.js"></script>
-        <script>var base_url = '../..';</script>
-        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
-        <script src="../../js/base.js"></script>
-
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            From here you can search these documents. Enter
-                            your search terms below.
-                        </p>
-                        <form role="form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                            </div>
-                        </form>
-                        <div id="mkdocs-search-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../manual/integration-guide/" title="Integration Guide" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
-        </div>
-    </body>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Integration Guide
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2016 - 2017 Niklas Grabowski
+          </div>
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application-0b7df094bf.js"></script>
+      <script>app.initialize({url:{base:"../.."}})</script>
+      
+    
+    
+      
+    
+  </body>
 </html>
