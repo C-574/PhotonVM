@@ -1,42 +1,7 @@
-### Custom ###
-bin/
-build/
-docs/graphs/
-test/
-ToDo.txt
-*.psd
-
-# mkdocs and Doxygen
-site/
-docs/doxygen/
-
-###
-# Created by https://www.gitignore.io/api/windows
-###
-
-### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-
-### Windows ###
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
+!.vscode/lauch.json
+/build
+/misc
+/site
+*.psd
+build.bat

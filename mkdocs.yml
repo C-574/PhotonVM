@@ -5,8 +5,29 @@ pages:
 - Manual:
     - Language: manual/language.md
     - Integration Guide: manual/integration-guide.md
-    - Using PVM: manual/using-pvm.md
 - Reference:
     - VM Architecture: reference/vm-architecture.md
-    - Assembly Lexer: reference/assembly-lexer.md
-theme: slate
+
+# Copyright
+copyright: 'Copyright &copy; 2016 - 2017 Niklas Grabowski'
+
+# Theme
+theme: 'unidata'
+
+# Options
+extra:
+  palette:
+    primary: 'blue'
+    accent: 'light-blue'
+  corner_logo: 'images/Corner_Logo.png'
+
+repo_name: 'C-574/PhotonVM'
+repo_url: 'https://github.com/C-574/PhotonVM'
+
+# Extensions
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite(guess_lang=false)
+  - markdown.extensions.toc(permalink=true)
+  - pymdownx.inlinehilite
+  - pymdownx.superfences

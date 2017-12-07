@@ -2,24 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Launch (Windows)",
+            "name": "(Windows) Launch",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/pvm.exe",
-            "args": [
-                "-r=./../examples/SimpleAdd.pho",
-                "-v=2"
-            ],
+            "program": "${workspaceRoot}/build/pvm.exe",
+            "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}/bin",
+            "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": false
-        },
-        {
-            "name": "C++ Attach (Windows)",
-            "type": "cppvsdbg",
-            "request": "attach",
-            "processId": "${command.pickProcess}"
         }
     ]
 }
