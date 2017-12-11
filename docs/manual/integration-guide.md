@@ -1,5 +1,5 @@
 # C++ Integration Guide
-This page describes how the Photon scripting language can be integrated into any C++ project. No additional librarys are required except for the C++ standard library. The process of integrating and customizing Photon with your own project will be described in the following sections.
+This page describes how the Photon scripting language can be integrated into any C++ project. No additional libraries are required except for the C++ standard library. The process of integrating and customizing Photon with your own project will be described in the following sections.
 
 To use Photon simply include the ``PhotonVM.h`` header file where it is needed. In **one** of the C++ files write the following line before `#include "PhotonVM.h`:
 ``` cpp
@@ -8,12 +8,12 @@ To use Photon simply include the ``PhotonVM.h`` header file where it is needed. 
 This will expand the actual implementation of the VM.
 
 ## Build Options
-Photon provides a set of build options that can be overridden to better fit into your project. Define them before `#include "PhotonVM.h` (or define them globally) to override the default settings. The following table shows all available options:
+Photon provides a set of build options that can be overridden to better fit into your project. Define them before `#include "PhotonVM.h"` (or define them globally) to override the default settings. The following table shows all available options:
 
 | Name                          | Values | Default   | Description                                                                                                                                                                                                                        |
 | ----------------------------- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | PHOTON_MAX_HOST_CALLS         | 1-4096 | 32        | Total number of Host-Calls that can be registered at once. This can be reduced if fewer calls are used. The maximum number of calls is: 0xFFF = 4095. Note that one group always consists of 256 functions.                        |
-| PHOTON_DEBUG_CALLBACK_ENABLED | 0-1    | 0         | Enable or disable the user debug callback on the virtual machine. See the section on [debug callbacks](#debug-callbacks) for more information.                                                                                                                                                              |
+| PHOTON_DEBUG_CALLBACK_ENABLED | 0-1    | 0         | Enable or disable the user debug callback on the virtual machine. See the section on [debug callbacks](#debug-callbacks) for more information.                                                                                     |
 | PHOTON_IS_HOST_CALL_STRICT    | 0-1    | 0         | Enable or disable strictness of Host-Calls. If enabled and no Host-Call can be found for a hcall instruction the VM will halt, otherwise it will continue.                                                                         |
 | PHOTON_COMPILER_ERROR_STRICT  | 0-1    | 0         | If enabled then the lexer will stop after it encounters an error, otherwise it will continue.                                                                                                                                      |
 | PHOTON_NO_COMPILER            | -      | undefined | Defining this disables the internal Photon byte-code compiler.                                                                                                                                                                     |
@@ -31,7 +31,7 @@ Photon::run(&vm);
 ```
 
 ## Compiling Byte-Code
-To execute anything on the VM byte-code is required which is a binary list of instructions that tell the VM what to do. As it is pretty difficult to write raw byte-code Photon defines a language that can be compiled into actual executable byte-code. For more information about the syntax of the language see the [language documentation](language.md).
+To execute anything on the VM byte-code is required which is a binary list of instructions that tell the VM what to do. As it is difficult to write raw byte-code Photon defines a language that can be compiled into actual executable byte-code. For more information about the syntax of the language see the [language documentation](language.md).
 
 !!! tip
     If byte-code is compiled offline instead and no compiler is required then consider disabling this feature altogether. See the [build options](#build-options) for more information.
@@ -54,7 +54,7 @@ After the VM has finished executing and the byte-code is no longer needed it is 
 ## Host Calls
 Photon's instruction set is very minimal so sometimes it is required to extend it with new functionality that is not existing in Photon. So how does this work? Host calls for the rescue!
 
-Host calls live in the host application (as the name implies) and can be called from a Photon script using the `hcl` instruction. They have the abillity to modify the VM registers and perform operations on them that are not possible in raw Photon instructions.
+Host calls live in the host application (as the name implies) and can be called from a Photon script using the `hcl` instruction. They have the ability to modify the VM registers and perform operations on them that are not possible in raw Photon instructions.
 
 In this example a simple call is created that takes the value at `reg0`, then squares it and  stores it in `reg1`.
 Creating a new Host Call is simple, first a call needs to be defined in the host by using the `HostCallback(name)` macro:
@@ -74,7 +74,7 @@ HostCallback(squareValue)
 
 Now the call needs to be registered with an instance of the VM. To do this a group ID and function ID is required.
 
-* **Group ID**: Used to group a number of functions together (mostly for organisation purposes). A group can contain up to 256 different functions. Ranges from [0, 15]
+* **Group ID**: Used to group a number of functions together (mostly for organizational purposes). A group can contain up to 256 different functions. Ranges from [0, 15]
 * **Function ID**: Defines the index of the function in a specific group. Ranges from [0, 255]
 
 Up to *4096* functions can be registered at the same time (total of all groups) and all can be callable via the byte-code. This number can be adjusted if fewer functions are used by the byte code. 
@@ -95,7 +95,7 @@ hcl 0 2
     The maximum number of Host Calls can be changed by defining `PHOTON_MAX_HOST_CALLS`. See the [build options](#build-options) for more info.
 
 ## Debug Callbacks
-Debug callbacks can be useful when debugging any Photon script. They report the decoded instruction and the current state of all registers after the VM has exeuted the instruction. This information can be used to track bugs in Photon scripts. For this feature to work the `PHOTON_DEBUG_CALLBACK_ENABLED` build option must be enabled. 
+Debug callbacks can be useful when debugging any Photon script. They report the decoded instruction and the current state of all registers after the VM has executed the instruction. This information can be used to track bugs in Photon scripts. For this feature to work the `PHOTON_DEBUG_CALLBACK_ENABLED` build option must be enabled. 
 
 For ease of use the `DebugCallback(name)` macro can be used to define a callback function.
 
@@ -110,7 +110,7 @@ DebugCallback(myCallback)
 }
 ```
 
-Finally the callback needs to be registered with a virtual machine using the `setDebugCallback` function.
+Finally, the callback needs to be registered with a virtual machine using the `setDebugCallback` function.
 Only one callback can be set to one VM instance at a time.
 
 ``` cpp

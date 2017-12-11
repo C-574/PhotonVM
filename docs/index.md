@@ -24,13 +24,13 @@ Some of the features of Photon are:
 
 The name *Photon* was chosen because every instruction that can be executed is very small and lightweight, as they are packed into only 16-bits. 
 
-The code that the Photon compiler packs into an executable format is very Assembly-like and linear. Also the VM is portable between different operating systems (currently tested on MSVC 2015).
+The code that the Photon compiler packs into an executable format is very Assembly-like and linear. The VM is portable between different operating systems (currently tested on MSVC 2015).
 
 
 # Examples
 This section shows a list of examples on how to use Photon source code to do some simple things.
 
-For a more complete example on how to use Photon on the C++ side, see the example files in the `/src` directory. The PVM sample (`pvm.cpp`) will show how to compile byte-code and execute it using Photon including some utillity functions.
+For a more complete example on how to use Photon on the C++ side, see the example files in the `/src` directory. The PVM sample (`pvm.cpp`) will show how to compile byte-code and execute it using Photon including some utility functions.
 
 ## Hello World
 
