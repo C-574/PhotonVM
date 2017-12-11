@@ -436,11 +436,11 @@
                 
                 
                 <h1 id="the-language">The Language<a class="headerlink" href="#the-language" title="Permanent link">&para;</a></h1>
-<p>The PhotonVM source code language is similar to the Assembly language, as it consists of a series of instructions that are combined to create an executable program. An instruction is defined by the name of the instruction to call and a list of up to three parameters, for example:
+<p>The PhotonVM source code language is similar to Assembly language, as it consists of a series of instructions that are combined to create an executable program. An instruction is defined by the name of the instruction to call and a list of up to three parameters, for example:
 <div class="codehilite"><pre><span></span>    <span class="nf">instr</span> <span class="no">param1</span> <span class="no">param2</span> <span class="no">param3</span>   
 </pre></div></p>
-<p>Every instruction only operates on the VM registers and has no stack or dynamic memory like other languages. Also an instruction can only take either up to three registers or a single constant as a parameter per instruction, if any are supported for the specific instruction.</p>
-<p>Parameters can be of tow types:</p>
+<p>Every instruction only operates on the VM registers and has no stack or dynamic memory like other languages. Also, an instruction can only take either up to three registers or a single constant as a parameter per instruction, if any are supported for the specific instruction.</p>
+<p>Parameters can be of two types:</p>
 <ul>
 <li><em>Register</em>: Registers are addressed as <code>reg0 - reg12</code> or <code>r0 - r12</code></li>
 <li><em>Constant value</em>: Constants are represented as <code>123</code>. The valid range for constants is [0, 255]</li>
@@ -502,7 +502,7 @@
 <tr>
 <td>0x7</td>
 <td>inv <strong>[register]</strong></td>
-<td>Inverts the sign of the value that is stored in the specified register. Thre result is stored in the same register.</td>
+<td>Inverts the sign of the value that is stored in the specified register. The result is stored in the same register.</td>
 </tr>
 <tr>
 <td>0x8</td>
@@ -537,7 +537,7 @@
 </tbody>
 </table>
 <h2 id="tips-tricks">Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Permanent link">&para;</a></h2>
-<p>This section features a list of useful tips and tricks that can be used to write your own Photon scripts. Some of them are used to imitate the behaviour of a higher level language like C/C++ or Java that support control structures like <strong><em>if-statements</em></strong> or <strong><em>for-loops</em></strong>.</p>
+<p>This section features a list of useful tips and tricks that can be used to write your own Photon scripts. Some of them are used to imitate the behavior of a higher-level language like C/C++ or Java that support control structures like <strong><em>if-statements</em></strong> or <strong><em>for-loops</em></strong>.</p>
 <div class="admonition missing">
 <p class="admonition-title">Missing</p>
 <p>This section is incomplete and will be changed later. Sorry.</p>

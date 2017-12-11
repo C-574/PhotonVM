@@ -424,13 +424,13 @@
                 
                 
                 <h1 id="c-integration-guide">C++ Integration Guide<a class="headerlink" href="#c-integration-guide" title="Permanent link">&para;</a></h1>
-<p>This page describes how the Photon scripting language can be integrated into any C++ project. No additional librarys are required except for the C++ standard library. The process of integrating and customizing Photon with your own project will be described in the following sections.</p>
+<p>This page describes how the Photon scripting language can be integrated into any C++ project. No additional libraries are required except for the C++ standard library. The process of integrating and customizing Photon with your own project will be described in the following sections.</p>
 <p>To use Photon simply include the <code>PhotonVM.h</code> header file where it is needed. In <strong>one</strong> of the C++ files write the following line before <code>#include &quot;PhotonVM.h</code>:
 <div class="codehilite"><pre><span></span><span class="cp">#define PHOTON_IMPLEMENTATION</span>
 </pre></div>
 This will expand the actual implementation of the VM.</p>
 <h2 id="build-options">Build Options<a class="headerlink" href="#build-options" title="Permanent link">&para;</a></h2>
-<p>Photon provides a set of build options that can be overridden to better fit into your project. Define them before <code>#include &quot;PhotonVM.h</code> (or define them globally) to override the default settings. The following table shows all available options:</p>
+<p>Photon provides a set of build options that can be overridden to better fit into your project. Define them before <code>#include &quot;PhotonVM.h&quot;</code> (or define them globally) to override the default settings. The following table shows all available options:</p>
 <table>
 <thead>
 <tr>
@@ -493,7 +493,7 @@ This will expand the actual implementation of the VM.</p>
 </pre></div>
 
 <h2 id="compiling-byte-code">Compiling Byte-Code<a class="headerlink" href="#compiling-byte-code" title="Permanent link">&para;</a></h2>
-<p>To execute anything on the VM byte-code is required which is a binary list of instructions that tell the VM what to do. As it is pretty difficult to write raw byte-code Photon defines a language that can be compiled into actual executable byte-code. For more information about the syntax of the language see the <a href="../language/">language documentation</a>.</p>
+<p>To execute anything on the VM byte-code is required which is a binary list of instructions that tell the VM what to do. As it is difficult to write raw byte-code Photon defines a language that can be compiled into actual executable byte-code. For more information about the syntax of the language see the <a href="../language/">language documentation</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>If byte-code is compiled offline instead and no compiler is required then consider disabling this feature altogether. See the <a href="#build-options">build options</a> for more information.</p>
@@ -512,7 +512,7 @@ To verify the actual output of the compiler use debug callbacks as described in 
 </div>
 <h2 id="host-calls">Host Calls<a class="headerlink" href="#host-calls" title="Permanent link">&para;</a></h2>
 <p>Photon's instruction set is very minimal so sometimes it is required to extend it with new functionality that is not existing in Photon. So how does this work? Host calls for the rescue!</p>
-<p>Host calls live in the host application (as the name implies) and can be called from a Photon script using the <code>hcl</code> instruction. They have the abillity to modify the VM registers and perform operations on them that are not possible in raw Photon instructions.</p>
+<p>Host calls live in the host application (as the name implies) and can be called from a Photon script using the <code>hcl</code> instruction. They have the ability to modify the VM registers and perform operations on them that are not possible in raw Photon instructions.</p>
 <p>In this example a simple call is created that takes the value at <code>reg0</code>, then squares it and  stores it in <code>reg1</code>.
 Creating a new Host Call is simple, first a call needs to be defined in the host by using the <code>HostCallback(name)</code> macro:
 <div class="codehilite"><pre><span></span><span class="n">HostCallback</span><span class="p">(</span><span class="n">squareValue</span><span class="p">)</span>
@@ -529,7 +529,7 @@ Creating a new Host Call is simple, first a call needs to be defined in the host
 </pre></div></p>
 <p>Now the call needs to be registered with an instance of the VM. To do this a group ID and function ID is required.</p>
 <ul>
-<li><strong>Group ID</strong>: Used to group a number of functions together (mostly for organisation purposes). A group can contain up to 256 different functions. Ranges from [0, 15]</li>
+<li><strong>Group ID</strong>: Used to group a number of functions together (mostly for organizational purposes). A group can contain up to 256 different functions. Ranges from [0, 15]</li>
 <li><strong>Function ID</strong>: Defines the index of the function in a specific group. Ranges from [0, 255]</li>
 </ul>
 <p>Up to <em>4096</em> functions can be registered at the same time (total of all groups) and all can be callable via the byte-code. This number can be adjusted if fewer functions are used by the byte code. </p>
@@ -547,7 +547,7 @@ Creating a new Host Call is simple, first a call needs to be defined in the host
 <p>The maximum number of Host Calls can be changed by defining <code>PHOTON_MAX_HOST_CALLS</code>. See the <a href="#build-options">build options</a> for more info.</p>
 </div>
 <h2 id="debug-callbacks">Debug Callbacks<a class="headerlink" href="#debug-callbacks" title="Permanent link">&para;</a></h2>
-<p>Debug callbacks can be useful when debugging any Photon script. They report the decoded instruction and the current state of all registers after the VM has exeuted the instruction. This information can be used to track bugs in Photon scripts. For this feature to work the <code>PHOTON_DEBUG_CALLBACK_ENABLED</code> build option must be enabled. </p>
+<p>Debug callbacks can be useful when debugging any Photon script. They report the decoded instruction and the current state of all registers after the VM has executed the instruction. This information can be used to track bugs in Photon scripts. For this feature to work the <code>PHOTON_DEBUG_CALLBACK_ENABLED</code> build option must be enabled. </p>
 <p>For ease of use the <code>DebugCallback(name)</code> macro can be used to define a callback function.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -560,7 +560,7 @@ Creating a new Host Call is simple, first a call needs to be defined in the host
 <span class="p">}</span>
 </pre></div>
 
-<p>Finally the callback needs to be registered with a virtual machine using the <code>setDebugCallback</code> function.
+<p>Finally, the callback needs to be registered with a virtual machine using the <code>setDebugCallback</code> function.
 Only one callback can be set to one VM instance at a time.</p>
 <div class="codehilite"><pre><span></span><span class="n">Photon</span><span class="o">::</span><span class="n">setDebugCallback</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vm</span><span class="p">,</span> <span class="n">myCallback</span><span class="p">);</span>
 </pre></div>

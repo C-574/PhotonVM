@@ -433,7 +433,7 @@ The core consists of a fixed set of registers that the compiled byte-code can op
 <p>Photon byte-code can not encode values that are greater than 255 or negative but registers can, for example as the result of an addition or using the <code class="codehilite"><span class="nf">inv</span></code> instruction.</p>
 </div>
 <h2 id="instruction-encoding">Instruction Encoding<a class="headerlink" href="#instruction-encoding" title="Permanent link">&para;</a></h2>
-<p>Instruction codes in Photon are encoded into 16-bit unsigned integer values. These contain all data of an instruction so the VM is able to decode and execute it on the fly.</p>
+<p>Instruction codes in Photon are encoded into 16-bit unsigned integer values. These contain all data of an instruction so the VM can decode and execute it on the fly.</p>
 <p>Constants are encoded in the last 8-bits of the instruction, so the VM supports values in a range from <em>0-255</em>. The data gets placed from the last-significant-bit position:</p>
 <div class="codehilite"><pre><span></span>| 7| 6| 5| 4| 3| 2| 1| 0|
 </pre></div>
@@ -458,7 +458,7 @@ The core consists of a fixed set of registers that the compiled byte-code can op
 
 <p>Many instructions use three parameters instead of two. The 8-bit constant section then gets split into two 4-bit sections. This works because registers <strong>never</strong> exceed the <code>[0x0, 0xF]</code> range so they can be stored using only 4-bits.</p>
 <h2 id="halt-instruction">Halt Instruction<a class="headerlink" href="#halt-instruction" title="Permanent link">&para;</a></h2>
-<p>The halt instruction is similar to C/C++ <code class="codehilite"><span class="k">return</span></code> or <code class="codehilite"><span class="nf">exit</span><span class="p">()</span></code>. It indicates an errors in the VM byte-code that can either be emitted by the VM itself, e.g. by an <em>out of bounds jump</em> or a <em>divide by zero</em>, or from user code by using the <code class="codehilite"><span class="nf">halt</span></code> instruction. By default every script will contain a halt at the end with a parameter of <code>0</code>, though it is advised to explicitly halt the VM at the end of script execution.</p>
+<p>The halt instruction is similar to C/C++ <code class="codehilite"><span class="k">return</span></code> or <code class="codehilite"><span class="nf">exit</span><span class="p">()</span></code>. It indicates an error in the VM byte-code that can either be emitted by the VM itself, e.g. by an <em>out of bounds jump</em> or a <em>divide by zero</em>, or from user code by using the <code class="codehilite"><span class="nf">halt</span></code> instruction. By default, every script will contain a halt at the end with a parameter of <code>0</code>, though it is advised to explicitly halt the VM at the end of script execution.</p>
 <p>Photon defines a fixed number of exit codes that can be emitted by the VM itself to report internal errors which should halt the VM immediately. These codes are encoded in the most significant bits while user errors should be encoded in the least significant bits to avoid conflicts. The following table shows all internal exit codes:</p>
 <table>
 <thead>
@@ -472,7 +472,7 @@ The core consists of a fixed set of registers that the compiled byte-code can op
 <tr>
 <td>0</td>
 <td>ExitCodeSuccess</td>
-<td>Signals sucessfull execution of the code.</td>
+<td>Signals successful execution of the code.</td>
 </tr>
 <tr>
 <td>251</td>
@@ -497,12 +497,12 @@ The core consists of a fixed set of registers that the compiled byte-code can op
 <tr>
 <td>255</td>
 <td>ExitCodeInvalidHostCall</td>
-<td>Signals that a host call function was requested but could not be resolved. This will only be signalled if <code class="codehilite"><span class="n">PHOTON_IS_HOST_CALL_STRICT</span></code> is enabled.</td>
+<td>Signals that a host call function was requested but could not be resolved. This will only be signaled if <code class="codehilite"><span class="n">PHOTON_IS_HOST_CALL_STRICT</span></code> is enabled.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="code-execution">Code Execution<a class="headerlink" href="#code-execution" title="Permanent link">&para;</a></h2>
-<p>Photon byte-code is stored in a contiguous block of memory as a list of packed 16-bit instruction codes. Execution of this byte-code list will always start at the first instruction and it is guaranteed that all registers are cleared to zero before the first instruction gets executed. The VM will run until either a halt instruction is executed or no more instructions are left to execute. In the latter case success of the execution is assumed. Furthermore when executing any byte-code the implementation will <strong>never</strong> assume that the actual byte-code is correct and should handle invalid execution by halting.</p>
+<p>Photon byte-code is stored in a contiguous block of memory as a list of packed 16-bit instruction codes. Execution of this byte-code list will always start at the first instruction and it is guaranteed that all registers are cleared to zero before the first instruction gets executed. The VM will run until either a halt instruction is executed or no more instructions are left to execute. In the latter case success of the execution is assumed. Furthermore, when executing any byte-code the implementation will <strong>never</strong> assume that the actual byte-code is correct and should handle invalid execution by halting.</p>
 <p>If debug callbacks are used then they get called <em>after</em> the instruction got executed.</p>
                 
                   
